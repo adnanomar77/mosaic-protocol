@@ -1,0 +1,105 @@
+{
+  "source": "paper/ledger_submission/references.bib",
+  "checked": 11,
+  "results": [
+    {
+      "key": "Nakamoto2008",
+      "url": "https://bitcoin.org/bitcoin.pdf",
+      "scheme": "https",
+      "status": 200,
+      "final_url": "https://bitcoin.org/bitcoin.pdf",
+      "error": null,
+      "status_class": "ok"
+    },
+    {
+      "key": "Yin2019HotStuff",
+      "url": "https://arxiv.org/abs/1803.05069",
+      "scheme": "https",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/1803.05069",
+      "error": null,
+      "status_class": "ok"
+    },
+    {
+      "key": "Danezis2022Narwhal",
+      "url": "https://arxiv.org/abs/2105.11827",
+      "scheme": "https",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2105.11827",
+      "error": null,
+      "status_class": "ok"
+    },
+    {
+      "key": "Baudet2020FastPay",
+      "url": "https://arxiv.org/abs/2003.11506",
+      "scheme": "https",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2003.11506",
+      "error": null,
+      "status_class": "ok"
+    },
+    {
+      "key": "Blackshear2024SuiLutris",
+      "url": "https://arxiv.org/abs/2310.18042",
+      "scheme": "https",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2310.18042",
+      "error": null,
+      "status_class": "ok"
+    },
+    {
+      "key": "Babel2025Mysticeti",
+      "url": "https://arxiv.org/abs/2310.14821",
+      "scheme": "https",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2310.14821",
+      "error": null,
+      "status_class": "ok"
+    },
+    {
+      "key": "Reed1960",
+      "url": "https://doi.org/10.1137/0108018",
+      "scheme": "https",
+      "status": 403,
+      "final_url": "https://epubs.siam.org/doi/10.1137/0108018",
+      "error": null,
+      "status_class": "publisher_access_restricted"
+    },
+    {
+      "key": "SuiObjectModel",
+      "url": "https://docs.sui.io/develop/sui-architecture/object-model",
+      "scheme": "https",
+      "status": 200,
+      "final_url": "https://docs.sui.io/develop/sui-architecture/object-model",
+      "error": null,
+      "status_class": "ok"
+    },
+    {
+      "key": "LedgerAbout",
+      "url": "https://ledger.pitt.edu/ojs/ledger/about",
+      "scheme": "https",
+      "status": 200,
+      "final_url": "https://ledger.pitt.edu/ojs/ledger/about",
+      "error": null,
+      "status_class": "ok"
+    },
+    {
+      "key": "LedgerAI",
+      "url": "https://ledgerjournal.org/ojs/ledger/AI",
+      "scheme": "https",
+      "status": 200,
+      "final_url": "https://ledgerjournal.org/ojs/ledger/AI",
+      "error": null,
+      "status_class": "ok"
+    },
+    {
+      "key": "Allemon2026MOSAIC",
+      "url": "https://github.com/adnanomar77/mosaic-protocol",
+      "scheme": "https",
+      "status": 200,
+      "final_url": "https://github.com/adnanomar77/mosaic-protocol",
+      "error": null,
+      "status_class": "ok"
+    }
+  ]
+}
