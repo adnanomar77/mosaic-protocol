@@ -41,7 +41,15 @@ def main() -> int:
             )
             row["status"] = response.status_code
             row["final_url"] = response.url
-            if response.status_code == 403 and response.url.startswith("https://epubs.siam.org/doi/"):
+            restricted_publisher = (
+                response.status_code == 403
+                and (
+                    response.url.startswith("https://epubs.siam.org/doi/")
+                    or response.url.startswith("https://dl.acm.org/doi/")
+                    or response.url.startswith("https://ieeexplore.ieee.org/")
+                )
+            )
+            if restricted_publisher:
                 row["status_class"] = "publisher_access_restricted"
             else:
                 row["status_class"] = "ok" if response.status_code < 400 else "http_error"

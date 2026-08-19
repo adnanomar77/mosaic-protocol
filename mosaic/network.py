@@ -221,8 +221,10 @@ class MosaicNode:
     metrics: dict[str, int] = field(default_factory=lambda: {
         "sent_messages": 0,
         "sent_bytes": 0,
+        "sent_bytes_by_type": {},
         "received_messages": 0,
         "received_bytes": 0,
+        "received_bytes_by_type": {},
         "dropped_messages": 0,
         "retries": 0,
         "errors": 0,
@@ -376,7 +378,11 @@ class MosaicNode:
                 self.metrics["replay_rejected"] += 1
                 return
             self.metrics["received_messages"] += 1
-            self.metrics["received_bytes"] += len(json.dumps(message, sort_keys=True)) + 4
+            wire_bytes = len(json.dumps(message, sort_keys=True, separators=(",", ":")).encode("utf-8")) + 4
+            self.metrics["received_bytes"] += wire_bytes
+            message_type = str(message.get("type", "unknown"))
+            by_type = self.metrics["received_bytes_by_type"]
+            by_type[message_type] = by_type.get(message_type, 0) + wire_bytes
             response = await self._dispatch(message)
             if response is not None:
                 await write_frame(writer, response)
@@ -438,6 +444,9 @@ class MosaicNode:
                 sent = await asyncio.wait_for(write_frame(writer, message), timeout=self.connect_timeout)
                 self.metrics["sent_messages"] += 1
                 self.metrics["sent_bytes"] += sent
+                message_type = str(message.get("type", "unknown"))
+                by_type = self.metrics["sent_bytes_by_type"]
+                by_type[message_type] = by_type.get(message_type, 0) + sent
                 writer.close()
                 await writer.wait_closed()
                 return

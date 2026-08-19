@@ -69,9 +69,9 @@ plt.close(fig)
 
 with (DATA / "evaluation_summary.csv").open("w", encoding="utf-8") as handle:
     handle.write("evidence,value,unit,scope\n")
-    handle.write("pytest tests,87,tests,local repository\n")
+    handle.write("pytest tests,102,tests,local repository\n")
     handle.write("wire fuzz,4000,cases,parser harness\n")
-    handle.write("bounded model checks,8,checks,M1-M8\n")
+    handle.write("bounded model records,12,records,finite ECTC/quorum/availability/execution checks\n")
     handle.write("long-run nodes,7,nodes,local emulation\n")
     handle.write("long-run operations,120,operations,local emulation\n")
     handle.write("long-run successes,120,operations,local emulation\n")
@@ -99,7 +99,7 @@ selected = [
 ]
 labels = [
     "disjoint",
-    "same resource",
+    "competing claims",
     "batch 10",
     "batch 100",
 ]
@@ -112,7 +112,7 @@ b1 = ax.bar(x - width / 2, p50, width, label="p50", color="#6a1b75")
 b2 = ax.bar(x + width / 2, p95, width, label="p95", color="#9e9e9e")
 ax.set_ylabel("Per-operation latency (ms)")
 ax.set_xticks(x, labels)
-ax.set_title("ECTC workload and batching measurements")
+ax.set_title("ECTC workloads: disjoint, competing, and batching")
 ax.grid(axis="y", color="#dddddd", linewidth=0.5)
 ax.legend(frameon=False, ncols=2)
 for bars in (b1, b2):

@@ -1,6 +1,6 @@
 {
   "source": "paper/ledger_submission/references.bib",
-  "checked": 14,
+  "checked": 18,
   "results": [
     {
       "key": "Nakamoto2008",
@@ -108,7 +108,7 @@
       "status": 403,
       "final_url": "https://dl.acm.org/doi/abs/10.1145/2517349.2522732",
       "error": null,
-      "status_class": "http_error"
+      "status_class": "publisher_access_restricted"
     },
     {
       "key": "Gelashvili2022BlockSTM",
@@ -125,6 +125,42 @@
       "scheme": "https",
       "status": 200,
       "final_url": "https://arxiv.org/abs/2311.13936",
+      "error": null,
+      "status_class": "ok"
+    },
+    {
+      "key": "Castro1999PBFT",
+      "url": "https://www.usenix.org/conference/osdi-99/practical-byzantine-fault-tolerance",
+      "scheme": "https",
+      "status": 200,
+      "final_url": "https://www.usenix.org/conference/osdi-99/practical-byzantine-fault-tolerance",
+      "error": null,
+      "status_class": "ok"
+    },
+    {
+      "key": "Distler2021BFTSMR",
+      "url": "https://dl.acm.org/doi/10.1145/3436728",
+      "scheme": "https",
+      "status": 403,
+      "final_url": "https://dl.acm.org/doi/10.1145/3436728",
+      "error": null,
+      "status_class": "publisher_access_restricted"
+    },
+    {
+      "key": "Civit2021Polygraph",
+      "url": "https://ieeexplore.ieee.org/document/9546489",
+      "scheme": "https",
+      "status": 202,
+      "final_url": "https://ieeexplore.ieee.org/document/9546489",
+      "error": null,
+      "status_class": "ok"
+    },
+    {
+      "key": "Chun2007AttestedMemory",
+      "url": "https://research.google/pubs/attested-append-only-memory-making-adversaries-stick-to-their-word/",
+      "scheme": "https",
+      "status": 200,
+      "final_url": "https://research.google/pubs/attested-append-only-memory-making-adversaries-stick-to-their-word/",
       "error": null,
       "status_class": "ok"
     }

@@ -10,12 +10,12 @@
 | safety errors غير المتوقعة | **0** |
 | Byzantine validators | 2 من 7 |
 | kill/restart | `w1` عند العملية 40، استعادة WAL ناجحة |
-| p50 | 37.520503 ms |
-| p95 | 231.326768 ms |
-| bytes per successful operation | 179,015.28 تقريبًا |
+| p50 | 36.804089 ms |
+| p95 | 233.559733 ms |
+| bytes per successful operation | 184,916.02 تقريبًا، مع تفصيل sent/received حسب message type |
 | partial frames المغلقة | 24 |
 | event log | 8 أحداث، hash-chain verified |
 
-النتيجة محفوظة في `testnet/artifacts/mosaic_testnet_long_final.json`، وسجل الأحداث في `testnet/events/testnet-0-v5.jsonl`. conflicts الناتجة عن Byzantine بقيت evidence/protocol conflicts ولم تُصنف كأخطاء تشغيلية. هذه نتيجة قوية لـlocal multi-process rehearsal، لكنها لا تمثل WAN حقيقية أو validators مستقلين؛ لذلك لا تُرفع وحدها إلى public testnet.
+النتيجة محفوظة في `testnet/artifacts/mosaic_testnet_long_final.json`، وسجل الأحداث النهائي في `testnet/events/testnet-0-final.jsonl`. conflicts الناتجة عن Byzantine بقيت evidence/protocol conflicts ولم تُصنف كأخطاء تشغيلية. هذه نتيجة قوية لـlocal multi-process rehearsal، لكنها لا تمثل WAN حقيقية أو validators مستقلين؛ لذلك لا تُرفع وحدها إلى public testnet.
 
 تسجيل الترقية في هذه المرحلة هو `config-v2` بحالة `not_applied_to_consensus`. لم تُنفذ ترقية consensus صامتة؛ وهذا مقصود لأن upgrade العامة تحتاج governance window ومشغلين مستقلين وcompatibility proof.

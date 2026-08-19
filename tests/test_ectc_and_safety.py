@@ -79,3 +79,22 @@ def test_weighted_model_b_honest_intersection():
     assert weighted_quorum_threshold(weights) == 7
     assert weighted_honest_intersection(weights, {"a", "b"}, {"a", "c", "d"}, {"d"})
     assert not weighted_honest_intersection(weights, {"a", "b"}, {"c", "d"}, {"d"})
+
+
+def test_competing_claim_has_conflict_outcome_while_winner_closes():
+    protocol, client = make_protocol()
+    predecessor = protocol.create_resource("shared", owner=client.identity)
+    winner = protocol.create_capsule(client=client, predecessor=predecessor, successor_root="winner")
+    loser = protocol.create_capsule(client=client, predecessor=predecessor, successor_root="loser")
+    closure = protocol.close(winner)
+    successor = protocol.apply(winner, closure)
+    with pytest.raises(ConflictDetected) as caught:
+        protocol.witness_receipt("w0", loser, "ACCEPT")
+    evidence = caught.value.evidence
+    assert evidence.evidence_id in protocol.conflict_evidence
+    winner_outcome = protocol.transition_outcome(winner)
+    loser_outcome = protocol.transition_outcome(loser)
+    assert winner_outcome is not None and winner_outcome.status is ECTCStatus.CLOSED
+    assert winner_outcome.successor_seal_id == successor.seal_id
+    assert loser_outcome is not None and loser_outcome.status is ECTCStatus.CONFLICT
+    assert loser_outcome.evidence_ids == (evidence.evidence_id,)

@@ -19,7 +19,7 @@ PYTHONPATH=. python3 benchmarks/run_mosaic_ectc_workloads.py --operations 1000
 PYTHONPATH=. python3 paper/generate_figures.py
 ```
 
-The final artifact revision currently collects **101 tests**. The bounded model checker reports finite unweighted quorum cases, weighted support, ECTC outcome checks, bundle atomicity, availability checks, and deterministic-execution checks. The workload benchmark writes `docs/mosaic_ectc_workloads.json` and `paper/ledger_submission/ectc_workloads.csv`.
+The final artifact revision currently collects **102 tests**. The bounded model checker reports finite unweighted quorum cases, weighted support, ECTC outcome checks, bundle atomicity, availability checks, and deterministic-execution checks. The workload benchmark writes `docs/mosaic_ectc_workloads.json` and `paper/ledger_submission/ectc_workloads.csv`.
 
 ## Long-run rehearsal
 

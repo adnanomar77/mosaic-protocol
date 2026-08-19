@@ -21,16 +21,16 @@
 | Onboarding rehearsal | gate passed | 4 daemons في local multi-process emulation |
 | Beacon rehearsal | مكتملة | commit/reveal/finalize عبر TCP مع settlement |
 | Availability rehearsal | مكتملة | 5 providers، shard distribution، sampling، repair، WAL restart |
-| Long-run v5 | **120/120 ناجحة، liveness=1.0** | 7 عقد محلية، Byzantine×2، kill/restart وDoS جزئي |
+| Long-run final | **120/120 ناجحة، liveness=1.0** | 7 عقد محلية، Byzantine×2، kill/restart وDoS جزئي |
 | Long-run safety signal | **errors=0** | conflicts الخاصة بـByzantine بقيت evidence/protocol conflicts |
-| Long-run latency | **p50=37.520503 ms؛ p95=231.326768 ms** | localhost TCP؛ لا تمثل Internet WAN |
-| Long-run cost | **179,015.28 bytes/success تقريبًا** | قياس harness محدد وليس benchmark عامًا لكل workload |
+| Long-run latency | **p50=36.804089 ms؛ p95=233.559733 ms** | localhost TCP؛ لا تمثل Internet WAN |
+| Long-run cost | **184,916.02 bytes/success تقريبًا** | عداد sent/received مجمع مع تفصيل message type؛ ليس نفس مجال 3,071.22 in-process bytes/op |
 | DoS partial frames | **24 اتصالًا أُغلق** | تحقق تشغيلي من timeout/frame handling |
 | Event log | **8 أحداث؛ verified=true** | hash-chained JSONL؛ digest خارجي عام ما زال مطلوبًا |
 | HotStuff baseline | demo رسمي شُغّل | نحو 10,710 decisions في نحو 10 ثوانٍ؛ semantics وworkload مختلفان |
 | Narwhal/Tusk baseline | لم يكتمل build | تعذر إنتاج رقم صالح للمقارنة في البيئة الحالية |
 
-المصدر الأساسي للأرقام هو `testnet/artifacts/mosaic_testnet_long_final.json`، وسجل التشغيل هو `testnet/events/testnet-0-v5.jsonl`. تقرير long-run التفصيلي موجود في `docs/mosaic_testnet_long_ar.md`.
+المصدر الأساسي للأرقام هو `testnet/artifacts/mosaic_testnet_long_final.json`، وسجل التشغيل النهائي هو `testnet/events/testnet-0-final.jsonl`. تقرير long-run التفصيلي موجود في `docs/mosaic_testnet_long_ar.md`.
 
 ## 3. ما تم إنجازه في طبقات permissionless
 

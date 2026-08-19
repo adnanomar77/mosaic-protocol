@@ -28,7 +28,7 @@
 \thispagestyle{pagefirst}
 
 \begin{abstract}
-Distributed ledgers commonly make a globally ordered block or log the primary integrity boundary, even when application transitions touch disjoint resources. This paper introduces \emph{Evidence-Complete Transition Closure} (ECTC), a protocol semantics in which a state transition is not terminal merely because a validator accepted it. A Capsule must either reach a Closed outcome carrying a ClosureProof and successor StateSeal, a Conflict outcome carrying independently verifiable ConflictEvidence, or an Abandoned outcome carrying an AbandonProof. The protocol therefore binds the predecessor state, transition claim, witness obligation, and successor state, while preserving incompatible and abandoned claims as auditable artifacts. MOSAIC (Mutual-Obligation State And Integrity Capsules) is an executable prototype of this lifecycle. It includes Ed25519 signatures, leaderless TCP dissemination, SQLite WAL recovery, weighted membership and settlement, commit--reveal randomness, Reed--Solomon availability, deterministic execution, onboarding, and a hash-chained event log, but these components are treated as implementation support rather than individual novelty claims. We state an unweighted quorum-intersection argument for closure exclusivity, describe a weighted extension, map eight paper invariants to a bounded TLA+ model, and add adversarial state-machine tests. In a 1,000-operation serialized local workload, disjoint and same-resource cases produced 3.64/5.18 ms and 3.56/4.46 ms p50/p95 latency, respectively, while batch sizes of 10 and 100 reduced measured protocol bytes per successful operation to 2,530.77 and 2,473.96 bytes. A seven-process local long-run with two Byzantine test identities, a kill/restart event, and partial-frame probes completed all 120 operations with liveness 1.0, zero unexpected operational errors, p50 37.52 ms, and p95 231.33 ms. These are \texttt{LOCAL\_EMULATION} observations, not WAN or public-testnet evidence. The contribution is a reproducible protocol-semantics hypothesis and systems artifact, not a claim of universal blockchain superiority.
+Distributed ledgers commonly make a globally ordered block or log the primary integrity boundary, even when application transitions touch disjoint resources. This paper introduces \emph{Evidence-Complete Transition Closure} (ECTC), a protocol semantics in which a state transition is not terminal merely because a validator accepted it. A Capsule must either reach a Closed outcome carrying a ClosureProof and successor StateSeal, a Conflict outcome carrying independently verifiable ConflictEvidence, or an Abandoned outcome carrying an AbandonProof. The protocol therefore binds the predecessor state, transition claim, witness obligation, and successor state, while preserving incompatible and abandoned claims as auditable artifacts. MOSAIC (Mutual-Obligation State And Integrity Capsules) is an executable prototype of this lifecycle. It includes Ed25519 signatures, leaderless TCP dissemination, SQLite WAL recovery, weighted membership and settlement, commit--reveal randomness, Reed--Solomon availability, deterministic execution, onboarding, and a hash-chained event log, but these components are treated as implementation support rather than individual novelty claims. We state an unweighted quorum-intersection argument for closure exclusivity, describe a weighted extension, map eight paper invariants to a bounded TLA+ model, and add adversarial state-machine tests. In a 1,000-operation serialized local workload, disjoint transitions produced 3.54/3.63 ms p50/p95 latency, while a genuine same-resource competing-claims workload produced 4.19/5.02 ms p50/p95 latency, rejected 1,000 losing claims, and generated 1,000 ConflictEvidence artifacts. Batch sizes of 10 and 100 reduced measured protocol bytes per successful operation to 2,530.78 and 2,473.96 bytes. A seven-process local long-run with two Byzantine test identities, a kill/restart event, and partial-frame probes completed all 120 operations with liveness 1.0, zero unexpected operational errors, p50 36.80 ms, and p95 233.56 ms. These are \texttt{LOCAL\_EMULATION} observations, not WAN or public-testnet evidence. The contribution is a reproducible protocol-semantics hypothesis and systems artifact, not a claim of universal blockchain superiority.
 
 \begin{keywords}
 \item Evidence-complete transition closure.
@@ -268,14 +268,14 @@ No. & Scenario & Evidence location and scope \\
 \end{table}
 
 \subsection{Verification gates}
-The final repository collects 101 automated tests. The deterministic wire-fuzz harness exercises 4,000 parser cases. The bounded model checker reports twelve result records, including unweighted and weighted quorum checks, ECTC outcomes, bundle atomicity, availability certificate checks, and execution atomicity. These counts describe the current repository state and are not independent peer review or a formal proof.
+The final repository collects 102 automated tests. The deterministic wire-fuzz harness exercises 4,000 parser cases. The bounded model checker reports twelve result records, including unweighted and weighted quorum checks, ECTC outcomes, bundle atomicity, availability certificate checks, and execution atomicity. These counts describe the current repository state and are not independent peer review or a formal proof.
 
 \section{Experimental Evaluation}
 \subsection{Methodology and scope}
-The evaluation uses two complementary harnesses. The first is an in-process serialized workload that executes real Capsules, receipts, closures, seals, and hash-chained event records. It compares 1,000 disjoint transitions against 1,000 sequential transitions on one resource, evaluates BundleClosure batch sizes 1, 10, and 100 on independent resources, and runs a 120-operation disjoint scaling sweep at 4, 7, 10, and 16 validator processes. The second is the seven-process long-run daemon rehearsal with two Byzantine test identities, a scheduled kill/restart, and partial-frame probes. Neither harness is a WAN experiment.
+The evaluation uses two complementary harnesses. The first is an in-process serialized workload that executes real Capsules, receipts, closures, seals, and hash-chained event records. It compares 1,000 disjoint transitions against 1,000 same-resource competing-claims iterations, evaluates BundleClosure batch sizes 1, 10, and 100 on independent resources, and runs a 120-operation disjoint scaling sweep at 4, 7, 10, and 16 validator processes. The second is the seven-process long-run daemon rehearsal with two Byzantine test identities, a scheduled kill/restart, and partial-frame probes. Neither harness is a WAN experiment.
 
 \subsection{Disjoint, contended, and batching workloads}
-The disjoint workload creates 1,000 independent resources and closes one transition on each. The same-resource workload applies 1,000 sequential transitions to one resource; it measures a contended state path but does not inject simultaneous concurrent conflicts. Both cases use four validator objects and four ACCEPT receipts per closure. The batching workload creates independent closures and applies them through BundleClosure at batch sizes 1, 10, and 100. All event logs verified successfully.
+The disjoint workload creates 1,000 independent resources and closes one transition on each. The same-resource competing-claims workload creates two distinct Capsules from the same predecessor before either claim is closed. The first claim obtains a ClosureProof and successor StateSeal; the second claim is submitted to the same first-claim context and must be rejected with ConflictEvidence. Each of the 1,000 iterations therefore has one successful closure, one rejected claim, and one evidence artifact. Both the disjoint and competing workloads use four validator objects and four ACCEPT receipts for the winning closure. The batching workload creates independent closures and applies them through BundleClosure at batch sizes 1, 10, and 100. All event logs verified successfully.
 
 \begin{table}[h]
 \centering
@@ -285,26 +285,26 @@ The disjoint workload creates 1,000 independent resources and closes one transit
 \toprule
 Workload & p50 ms & p95 ms & throughput/s & bytes/op & conflicts \\
 \midrule
-Disjoint & 3.64 & 5.18 & 238.97 & 3,071.25 & 0 \\
-Same resource & 3.56 & 4.46 & 247.61 & 3,071.35 & 0 \\
-Batch 1 & 8.01 & 15.04 & 88.10 & 3,096.10 & 0 \\
-Batch 10 & 8.20 & 14.46 & 89.51 & 2,530.77 & 0 \\
-Batch 100 & 7.90 & 14.91 & 90.84 & 2,473.96 & 0 \\
+Disjoint & 3.54 & 3.63 & 258.27 & 3,071.22 & 0 \\
+Competing claims & 4.19 & 5.02 & 207.79 & 4,945.95 & 1,000 \\
+Batch 1 & 8.23 & 14.60 & 87.39 & 3,096.15 & 0 \\
+Batch 10 & 8.78 & 15.07 & 85.55 & 2,530.78 & 0 \\
+Batch 100 & 8.39 & 14.38 & 89.03 & 2,473.96 & 0 \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-The disjoint and same-resource rows have similar serialized latency because this benchmark does not run concurrent workers; the result should not be interpreted as evidence that contention is free. The meaningful observation is semantic: the protocol distinguishes resource identity and predecessor version, and the separate batch experiment reduces event-log and bundle overhead per successful operation. Batch 100 reduces measured protocol bytes per operation by approximately 19.4\% relative to the disjoint baseline in this implementation and workload, while its p95 remains close to batch 10. This is an implementation measurement, not a claim of superiority over another ledger.
+The competing-claims row is not a serial same-resource control: two claims are created before the winner is closed, and the loser follows the first-claim conflict path. Every iteration produced one Closed winner, one rejected loser, and one ConflictEvidence artifact; the event log remained verifiable. The measured evidence payload totaled 635,000 bytes, or 635 bytes per rejected claim, and the complete competing-claims accounting was 4,945.97 bytes per successful closure. This contrast supports the state-transition-centric claim in a limited but direct way: independent transitions avoid conflict evidence, whereas incompatible claims sharing one predecessor produce an explicit, measurable terminal artifact. Batch 100 reduces measured protocol bytes per operation by approximately 19.4\% relative to the disjoint baseline in this implementation and workload, while its p95 remains close to batch 10. These are implementation measurements, not claims of superiority over another ledger or of simultaneous WAN concurrency.
 
 \begin{figure}
 \centering
 \includegraphics[width=0.96\textwidth]{figures/ectc_workload_latency.png}
-\caption{Measured p50 and p95 latency for disjoint, same-resource, and BundleClosure workloads. The serialized local design does not model concurrent WAN execution.}
+\caption{Measured p50 and p95 latency for disjoint, competing-claim, and BundleClosure workloads. The competing workload creates two claims from one predecessor before closing the winner; the local design still does not model WAN concurrency.}
 \label{fig:workload}
 \end{figure}
 
 \subsection{Scaling sweep}
-The local disjoint sweep used 120 operations and varied validator process count. Throughput decreased from 255.75 operations/s at four validators to 154.60 at seven, 108.01 at ten, and 65.12 at sixteen. The corresponding p50 latencies were 3.56, 6.06, 8.65, and 14.87 ms. The curve is a measurement of the in-process Python implementation and its receipt fan-out, not a consensus lower bound.
+The local disjoint sweep used 120 operations and varied validator process count. Throughput decreased from 257.31 operations/s at four validators to 156.45 at seven, 112.16 at ten, and 71.87 at sixteen. The corresponding p50 latencies were 3.54, 6.01, 8.47, and 13.37 ms. The curve is a measurement of the in-process Python implementation and its receipt fan-out, not a consensus lower bound.
 
 \begin{table}[h]
 \centering
@@ -314,10 +314,10 @@ The local disjoint sweep used 120 operations and varied validator process count.
 \toprule
 Validators & p50 ms & p95 ms & throughput/s & bytes/op \\
 \midrule
-4 & 3.56 & 3.67 & 255.75 & 3,065.57 \\
-7 & 6.06 & 6.31 & 154.60 & 4,073.65 \\
-10 & 8.65 & 10.04 & 108.01 & 5,081.55 \\
-16 & 14.87 & 15.48 & 65.12 & 7,109.63 \\
+4 & 3.54 & 3.69 & 257.31 & 3,065.70 \\
+7 & 6.01 & 6.11 & 156.45 & 4,073.62 \\
+10 & 8.47 & 8.62 & 112.16 & 5,081.67 \\
+16 & 13.37 & 13.56 & 71.87 & 7,109.56 \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -330,7 +330,7 @@ Validators & p50 ms & p95 ms & throughput/s & bytes/op \\
 \end{figure}
 
 \subsection{Protocol and implementation overhead}
-The byte accounting uses actual JSON wire encodings and actual event-log records. For the disjoint 1,000-operation workload, the components are shown in Table \ref{tab:overhead}. \texttt{ClosureProof wrapper} excludes nested receipt payloads so that receipts are not double-counted; \texttt{Closure wire} is reported separately for inspection. The protocol-bytes total sums Capsule, WitnessReceipt, ClosureProof wrapper, StateSeal, four-byte framing overhead, event-log records, availability bytes, and bundle bytes.
+The byte accounting uses actual JSON wire encodings and actual event-log records. For the disjoint 1,000-operation workload, the components are shown in Table \ref{tab:overhead}. \texttt{ClosureProof wrapper} excludes nested receipt payloads so that receipts are not double-counted; \texttt{Closure wire} is reported separately for inspection. ConflictEvidence is zero in the disjoint row but is measured separately in the competing-claims row. The protocol-bytes total sums Capsule, WitnessReceipt, ClosureProof wrapper, StateSeal, four-byte framing overhead, event-log records, ConflictEvidence, availability bytes, and bundle bytes.
 
 \begin{table}[h]
 \centering
@@ -347,18 +347,19 @@ ClosureProof wrapper & 317,000 & 317.00 \\
 Closure wire including receipts & 1,621,000 & 1,621.00 \\
 Successor StateSeal wire & 199,780 & 199.78 \\
 Four-byte frame overhead & 28,000 & 28.00 \\
-Hash-chained event log & 707,579 & 707.58 \\
+Hash-chained event log & 707,548 & 707.55 \\
+ConflictEvidence & 0 & 0.00 \\
 Availability & 0 & 0.00 \\
 Bundle wrapper & 0 & 0.00 \\
-Non-overlapping protocol total & 3,071,249 & 3,071.25 \\
+Non-overlapping protocol total & 3,071,218 & 3,071.22 \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-This decomposition explains why an aggregate daemon byte counter can be much larger than a Capsule alone. The present implementation pays for verbose JSON, four receipts per closure, full cryptographic signatures, and a hash-chained audit event. These are implementation costs as well as protocol evidence costs. The distinction matters: a binary codec or receipt aggregation could reduce framing and representation overhead without changing the ECTC semantics, whereas removing the witness and closure artifacts would change the protocol claim.
+This decomposition explains why an aggregate daemon byte counter can be much larger than a Capsule alone. The present implementation pays for verbose JSON, four receipts per closure, full cryptographic signatures, and a hash-chained audit event. These are implementation costs as well as protocol evidence costs. In the competing-claims workload, ConflictEvidence adds 635 bytes per rejected claim on average. The distinction matters: a binary codec or receipt aggregation could reduce framing and representation overhead without changing the ECTC semantics, whereas removing the witness and closure artifacts would change the protocol claim.
 
 \subsection{Long-run recovery rehearsal}
-The seven-process v5 local rehearsal used two Byzantine identities, one scheduled kill/restart, 120 requested operations, and 24 partial-frame connections. All 120 operations succeeded, the liveness ratio was 1.0, and unexpected operational errors were zero. Median latency was 37.520503 ms and p95 latency was 231.326768 ms. The hash-chained event log contained eight events and verified successfully. The previous v3 artifact had recorded \texttt{CapsuleInvalid: unknown predecessor seal} after restart and p95 8,447.689336 ms. The corrected path classifies the predecessor race as pending/protocol rejection and routes early retries to a healthy validator. This is a recovery-path correction, not a general speedup claim.
+The seven-process v5 local rehearsal used two Byzantine identities, one scheduled kill/restart, 120 requested operations, and 24 partial-frame connections. All 120 operations succeeded, the liveness ratio was 1.0, and unexpected operational errors were zero. Median latency was 36.804089 ms and p95 latency was 233.559733 ms. The hash-chained event log contained eight events and verified successfully. Its aggregate daemon counter reported 184,916.02 sent/received bytes per successful operation; this includes node-to-node traffic across the seven processes and is not the same accounting domain as the 3,071.22 in-process non-overlapping protocol bytes per operation in Table \ref{tab:workloads}. The final artifact also records sent and received totals by message type (CAPSULE, CLOSURE, RECEIPT, SUBMIT, and METRICS), making the network counter auditable rather than treating it as an in-process protocol-byte measurement. The previous v3 artifact had recorded \texttt{CapsuleInvalid: unknown predecessor seal} after restart and p95 8,447.689336 ms. The corrected path classifies the predecessor race as pending/protocol rejection and routes early retries to a healthy validator. This is a recovery-path correction, not a general speedup claim.
 
 \begin{figure}
 \centering
@@ -369,13 +370,13 @@ The seven-process v5 local rehearsal used two Byzantine identities, one schedule
 
 \section{Related Work}
 \subsection{Ordered BFT and DAG dissemination}
-HotStuff is a leader-based BFT replication protocol with a partially synchronous safety/liveness model and responsive communication phases \cite{Yin2019HotStuff}. Narwhal and Tusk separate reliable dissemination from ordering and use a DAG-based mempool with BFT consensus \cite{Danezis2022Narwhal}. Mysticeti studies low-latency DAG-based BFT and reports a large-scale evaluation \cite{Babel2025Mysticeti}. MOSAIC does not replace these protocols or claim a lower communication bound. Its proposed object is a transition lifecycle whose evidence is consumed by execution and audit layers.
+Practical Byzantine fault tolerance established the classic state-machine replication baseline for signed requests, quorum agreement, and deterministic execution \cite{Castro1999PBFT}; later systems work emphasizes the composability and implementation boundaries among clients, agreement, execution, checkpointing, and recovery \cite{Distler2021BFTSMR}. HotStuff is a leader-based BFT replication protocol with a partially synchronous safety/liveness model and responsive communication phases \cite{Yin2019HotStuff}. Narwhal and Tusk separate reliable dissemination from ordering and use a DAG-based mempool with BFT consensus \cite{Danezis2022Narwhal}. Mysticeti studies low-latency DAG-based BFT and reports a large-scale evaluation \cite{Babel2025Mysticeti}. MOSAIC does not replace these protocols or claim a lower communication bound. Its proposed object is a transition lifecycle whose evidence is consumed by execution and audit layers.
 
 \subsection{Certificates and restricted ordering}
-FastPay demonstrates a high-throughput settlement protocol based on Byzantine consistent broadcast for pre-funded payments \cite{Baudet2020FastPay}. Sui Lutris combines a consensusless agreement path with consensus when transactions risk inconsistent concurrent access \cite{Blackshear2024SuiLutris}. Sui's object model makes versions, owners, and authenticated object references first-class \cite{SuiObjectModel}. These works are close prior art for selective ordering and local certificates. MOSAIC's narrower hypothesis is that the accepted and rejected transition claims should share one explicit evidence-complete closure lifecycle.
+FastPay demonstrates a high-throughput settlement protocol based on Byzantine consistent broadcast for pre-funded payments \cite{Baudet2020FastPay}. Sui Lutris combines a consensusless agreement path with consensus when transactions risk inconsistent concurrent access \cite{Blackshear2024SuiLutris}. Sui's object model makes versions, owners, and authenticated object references first-class \cite{SuiObjectModel}. Polygraph studies accountability in Byzantine agreement by exposing evidence when disagreement becomes unavoidable \cite{Civit2021Polygraph}. These works are close prior art for selective ordering, local certificates, and accountability. MOSAIC's narrower hypothesis is that the accepted and rejected transition claims should share one explicit evidence-complete closure lifecycle.
 
 \subsection{Object-centric state and parallel execution}
-Tango investigates distributed data structures over a shared log and demonstrates that object-level state and versioning can be built above replicated logging \cite{Balakrishnan2013Tango}. Block-STM uses optimistic concurrency and deterministic validation to execute transactions in parallel while preserving a preset order \cite{Gelashvili2022BlockSTM}. Process-commutative distributed objects and BFT CRDTs study legal operation traces and the space between conflict-free replication and total-order ledgers \cite{Frey2024BFTCRDT}. These results prevent MOSAIC from claiming first use of object-centric execution, optimistic concurrency, commutativity, or reduced ordering scope. The distinction proposed here is evidence semantics: a transition's terminal status is Closed only with a closure proof and successor seal, while Conflict and Abandoned remain independently inspectable artifacts.
+Tango investigates distributed data structures over a shared log and demonstrates that object-level state and versioning can be built above replicated logging \cite{Balakrishnan2013Tango}. Block-STM uses optimistic concurrency and deterministic validation to execute transactions in parallel while preserving a preset order \cite{Gelashvili2022BlockSTM}. Process-commutative distributed objects and BFT CRDTs study legal operation traces and the space between conflict-free replication and total-order ledgers \cite{Frey2024BFTCRDT}. These results prevent MOSAIC from claiming first use of object-centric execution, optimistic concurrency, commutativity, or reduced ordering scope. Attested append-only memory also shows how authenticated history can constrain an adversary's later claims \cite{Chun2007AttestedMemory}. The distinction proposed here is evidence semantics: a transition's terminal status is Closed only with a closure proof and successor seal, while Conflict and Abandoned remain independently inspectable artifacts. ECTC is therefore positioned as a specific lifecycle and evidence boundary, not as a claim to invent authenticated state, transaction certificates, or accountability in general.
 
 \begin{table}[h]
 \centering
@@ -463,7 +464,7 @@ python3 -m benchmarks.run_mosaic_testnet_long --nodes 7 \\
   --event-log testnet/events/testnet-0.jsonl
 \end{lstlisting}
 
-The fixed research artifact is tagged separately from the moving branch after this revision. The repository excludes private keys, credentials, local virtual environments, and runtime WAL data. \texttt{paper/ledger\_submission/checksums.sha256} records the manuscript and submission-package hashes. The values reported in this paper are reproducible workload/artifact values, not a promise of identical microsecond-level timings on another machine.
+The fixed research artifact is tagged `v6.0.0-ectc-paper` separately from the moving branch. The repository excludes private keys, credentials, local virtual environments, and runtime WAL data. \texttt{paper/ledger\_submission/checksums.sha256} records the manuscript and submission-package hashes. The values reported in this paper are reproducible workload/artifact values, not a promise of identical microsecond-level timings on another machine.
 
 \section{Discussion}
 The scientific value of MOSAIC, if supported by independent replication, would be a change in the object whose integrity is made explicit. A conventional ledger can retain transaction data, votes, and state roots, but a protocol implementation may still expose a rejected or abandoned claim only as an absence from the committed path. ECTC makes the negative paths part of the claimed lifecycle. That may matter in settlement networks, registries, multi-party workflows, or systems where the reason for rejection is itself subject to audit.
@@ -473,9 +474,9 @@ The cost is visible. The 1,000-operation decomposition shows that four signed re
 The closest future comparison is workload-by-workload rather than “MOSAIC versus blockchain” in the abstract. Disjoint resources should be evaluated for ordering scope and closure cost; simultaneous conflicting resources should be evaluated for detection latency and evidence completeness; shared state should be evaluated for closure contention and recovery; availability should be evaluated for provider overhead and correlated shard loss; and permissionless deployment should be evaluated for admission, stake concentration, slashing, and churn. The current artifacts establish the measurement machinery but do not yet supply the independent-WAN evidence for those claims.
 
 \section{Conclusion}
-This paper introduced MOSAIC and its central semantics, Evidence-Complete Transition Closure. Every observed terminal transition outcome is intended to be Closed with a ClosureProof and successor StateSeal, Conflict with ConflictEvidence, or Abandoned with AbandonProof; pending is explicitly non-terminal. The paper stated the unweighted quorum assumptions for Closure Exclusivity, described a weighted extension, mapped I1--I8 to TLA+, added a 20-case adversarial matrix, and evaluated disjoint, same-resource, batched, scaled, and crash/restart workloads.
+This paper introduced MOSAIC and its central semantics, Evidence-Complete Transition Closure. Every observed terminal transition outcome is intended to be Closed with a ClosureProof and successor StateSeal, Conflict with ConflictEvidence, or Abandoned with AbandonProof; pending is explicitly non-terminal. The paper stated the unweighted quorum assumptions for Closure Exclusivity, described a weighted extension, mapped I1--I8 to TLA+, added a 20-case adversarial matrix, and evaluated disjoint, competing-claims, batched, scaled, and crash/restart workloads. The competing-claims experiment closed 1,000 winners, rejected 1,000 losing claims, and generated 1,000 ConflictEvidence artifacts.
 
-The implementation and local artifacts support a coherent protocol hypothesis. They do not establish a public permissionless testnet, WAN liveness, economic security, an unbounded formal proof, or universal performance superiority. The next scientific step is independent WAN deployment with operator-controlled keys, stronger formal checking of epochs and weighted membership, and fair comparisons with HotStuff, Narwhal/Tusk, Sui Lutris, FastPay, Mysticeti, Block-STM, and BFT-object systems. Until those experiments are complete, the defensible claim is that MOSAIC is a reproducible protocol and systems artifact whose distinctive hypothesis is an evidence-complete state-transition closure lifecycle.
+The implementation and local artifacts support a coherent protocol hypothesis. They do not establish a public permissionless testnet, WAN liveness, economic security, an unbounded formal proof, or universal performance superiority. Independent WAN deployment with operator-controlled keys, stronger formal checking of epochs and weighted membership, and fair comparisons with HotStuff, Narwhal/Tusk, Sui Lutris, FastPay, Mysticeti, Block-STM, and BFT-object systems are outside the present evaluation scope. Within the reported scope, the defensible claim is that MOSAIC is a reproducible protocol and systems artifact whose distinctive hypothesis is an evidence-complete state-transition closure lifecycle.
 
 \ledgernotes
 \section*{Acknowledgements}
@@ -491,7 +492,7 @@ The author declares that he has no known conflicts of interest relevant to this 
 An AI-assisted software and language workflow was used during project development and manuscript preparation \cite{LedgerAI} for code inspection, drafting support, organization, and language editing. The author reviewed the implementation, ran the experiments, verified the reported values and sources, and remains solely responsible for the manuscript, its claims, limitations, and final submission. This disclosure follows Ledger's AI policy.
 
 \section*{Data and Code Availability}
-The source code, benchmark drivers, formal model, generated figures, tabular data, JSON artifacts, adversarial matrix, and checksums are available at \url{https://github.com/adnanomar77/mosaic-protocol} \cite{Allemon2026MOSAIC}. The fixed artifact version associated with this revision is identified by the repository tag and checksum manifest. The public repository excludes private keys, credentials, and local virtual environments. All current evaluation artifacts retain the \texttt{LOCAL\_EMULATION} scope.
+The source code, benchmark drivers, formal model, generated figures, tabular data, JSON artifacts, adversarial matrix, and checksums are available at \url{https://github.com/adnanomar77/mosaic-protocol} \cite{Allemon2026MOSAIC}. The fixed artifact version associated with this revision is identified by repository tag `v6.0.0-ectc-paper` and checksum manifest. The public repository excludes private keys, credentials, and local virtual environments. All current evaluation artifacts retain the \texttt{LOCAL\_EMULATION} scope.
 
 \bibliographystyle{ledgerbib}
 \bibliography{references}
@@ -511,7 +512,7 @@ Path & Purpose \\
 \midrule
 \texttt{mosaic/} & Protocol, ECTC outcomes, quorum safety, networking, execution, settlement, beacon, availability, and storage. \\
 \texttt{tests/} & Protocol, ECTC, adversarial, storage, security, execution, and network tests. \\
-\texttt{benchmarks/run\_mosaic\_ectc\_workloads.py} & Disjoint, same-resource, batching, scaling, and byte-accounting benchmark. \\
+\texttt{benchmarks/run\_mosaic\_ectc\_workloads.py} & Disjoint, competing-claims, batching, scaling, conflict-evidence, and byte-accounting benchmark. \\
 \texttt{benchmarks/run\_mosaic\_testnet\_long.py} & Seven-process long-run harness with churn, restart, and event logging. \\
 \texttt{formal/mosaic\_safety.tla} & Bounded ECTC safety model and I1--I8 mapping. \\
 \texttt{formal/ectc\_safety\_argument.md} & Model A theorem and weighted extension argument. \\

@@ -41,6 +41,14 @@ def run(nodes: int, operations: int, base_port: int, data_dir: str, event_path: 
     total_sent = sum(item.get("metrics", {}).get("sent_bytes", 0) for item in metrics)
     total_received = sum(item.get("metrics", {}).get("received_bytes", 0) for item in metrics)
     total_errors = sum(item.get("metrics", {}).get("errors", 0) for item in metrics)
+    sent_by_type: dict[str, int] = {}
+    received_by_type: dict[str, int] = {}
+    for item in metrics:
+        item_metrics = item.get("metrics", {})
+        for key, value in item_metrics.get("sent_bytes_by_type", {}).items():
+            sent_by_type[key] = sent_by_type.get(key, 0) + int(value)
+        for key, value in item_metrics.get("received_bytes_by_type", {}).items():
+            received_by_type[key] = received_by_type.get(key, 0) + int(value)
     output = {
         "scope": "LOCAL_EMULATION; not independent public hosts",
         "nodes": nodes,
@@ -56,6 +64,8 @@ def run(nodes: int, operations: int, base_port: int, data_dir: str, event_path: 
         "cost": {
             "sent_bytes": total_sent,
             "received_bytes": total_received,
+            "sent_bytes_by_type": sent_by_type,
+            "received_bytes_by_type": received_by_type,
             "bytes_per_success": (total_sent + total_received) / result["operations_successful"] if result["operations_successful"] else None,
         },
         "p50_ms": result["p50_ms"],

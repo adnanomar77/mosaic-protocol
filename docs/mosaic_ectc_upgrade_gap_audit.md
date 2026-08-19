@@ -1,46 +1,54 @@
-# ECTC upgrade gap audit
+# ECTC upgrade gap audit — revision after Pasted_content_21
 
 ## Target claim
 
-The revised paper will center on **Evidence-Complete Transition Closure (ECTC)**:
+The paper is centered on **Evidence-Complete Transition Closure (ECTC)**:
 
-> For every Capsule, the protocol lifecycle terminates in a documented outcome in `{Closed, Conflict, Abandoned}`. A closed outcome binds the predecessor state, Capsule, witness set, and successor StateSeal; a conflict outcome preserves signed ConflictEvidence; and an abandoned outcome preserves an AbandonProof. No terminal outcome is intentionally opaque or unverifiable within the protocol model.
+> For every Capsule, a terminal protocol outcome is represented as `Closed`, `Conflict`, or `Abandoned`. A closed outcome binds the predecessor state, Capsule, witness set, and successor StateSeal; a conflict outcome preserves signed ConflictEvidence; and an abandoned outcome preserves an AbandonProof. If none is available, the local state remains pending rather than being silently classified as success or failure.
 
-This is a protocol-semantics claim. It is not a claim that MOSAIC invented Ed25519, gossip, SQLite WAL, Reed–Solomon coding, quorum voting, deterministic execution, commit–reveal randomness, or a new consensus algorithm.
+This is a protocol-semantics claim. It is not a claim that MOSAIC invented Ed25519, gossip, SQLite WAL, Reed–Solomon coding, quorum voting, deterministic execution, commit–reveal randomness, object-centric execution, or a new consensus algorithm.
 
-## Baseline and required upgrades
+## Requirement status
 
-| Requirement | Current baseline | Required status in revised paper |
+| Requirement | Current state | Remaining action |
 |---|---|---|
-| Capsule/Receipt/Closure/Seal lifecycle | Implemented in `mosaic/protocol.py` and `mosaic/model.py` | Reframe as the ECTC abstraction and expose all terminal outcomes |
-| Closed/Conflict/Abandoned outcomes | Covered by close, ConflictEvidence, and abandon paths, but not named as one typed outcome | Add an explicit outcome classifier and tests |
-| I1--I8 invariants | Existing bounded checks M1--M8 are partial; M5/M8 are tautological and M7 is weak | Replace with named non-trivial invariants and a paper-to-TLA+ mapping |
-| Quorum model | Weighted threshold is implemented as `(2*total_weight)//3 + 1`; small unweighted intersection is checked in Python | State an unweighted Model A theorem first; define weighted Model B as an extension |
-| Closure exclusivity | Local first-claim locks and conflict evidence are implemented; no complete theorem is currently written | Add assumptions, lemma, and a bounded executable support check; do not call it an unbounded formal proof |
-| TLA+ | Models closures, locks, conflicts, abandons, availability, and execution, but includes tautological invariants and abstracts cryptography | Add explicit I1--I8 names and make the finite-bound limitation explicit |
-| Adversarial state machine | Focused tests cover close/apply, conflict, abandon/retry, bundle atomicity, signatures, and weighted threshold | Add the 20-case matrix from the revision requirements |
-| Disjoint vs. contended workload | Current long run is 120 operations and does not isolate resource independence | Add workloads that vary resource contention and report latency, closures, conflicts, messages, and bytes |
-| Batching | BundleClosure exists and has atomicity tests | Add a small single/10/100 closure overhead experiment or explicitly scope bundling as auxiliary |
-| Scaling | Current local rehearsals are primarily 4--7 processes and 120 operations | Add at least one scaling dimension and label it LOCAL_EMULATION |
-| Byte accounting | Current aggregate is approximately 179 kB per successful operation | Decompose Capsule, receipts, ClosureProof, StateSeal, conflict evidence, framing, event log, and availability bytes |
-| Related work | Current references cover major BFT/DAG/payment systems | Add object-centric execution, optimistic concurrency, authenticated state, transaction certificates, and accountable state-machine literature |
-| Reproducibility | Public repository, tests, artifacts, figures, and checksums exist | Add one-command reproduction, a fixed tag, and paper links to the tag rather than a moving branch |
+| Capsule/Receipt/Closure/Seal lifecycle | Implemented and described as ECTC | Preserve as the primary contribution. |
+| Closed/Conflict/Abandoned outcomes | Explicit `ECTCStatus`/`TransitionOutcome`, implementation, tests, and measured outcomes | Closed: winner; Conflict: rejected claim with ConflictEvidence; Abandoned: preserved AbandonProof. |
+| I1--I8 invariants | Named in paper, TLA+ mapping, Python tests and bounded checks | Keep bounded/formal boundary explicit; strengthen only where implementation supports it. |
+| Core quorum model | Model A uses `N >= 3f+1`, quorum `>= 2f+1` | Keep weighted stake as Model B extension, not the core theorem. |
+| Closure Exclusivity | Conditional theorem plus executable finite support | Do not call it an unbounded proof or complete consensus proof. |
+| TLA+ | ECTC-oriented finite model with named invariants | Remaining limitation: cryptography, reconfiguration, and unbounded execution are abstracted. |
+| Adversarial state machine | 20-case matrix and tests | Completed: competing-claims artifact records 1,000 rejected claims and 1,000 ConflictEvidence artifacts. |
+| Disjoint vs. contended state | Disjoint row plus genuine same-resource competing-claims row | Completed: 1,000 competing claims produced 1,000 conflicts, 1,000 rejected claims, 1,000 evidence artifacts, and 635 bytes/evidence. |
+| Batching | Batch sizes 1/10/100 measured | Keep as supporting infrastructure; do not present bundling as ECTC novelty. |
+| Scaling | 4/7/10/16 validator-process local sweep | Keep `LOCAL_EMULATION` scope. |
+| Byte accounting | In-process ECTC workload decomposes 3,071.22 bytes/op and batching costs; daemon run reports 184,916.02 bytes/success | Completed: the paper separates accounting domains and the long-run artifact records sent/received bytes by message type. |
+| Related work | Added Tango, Block-STM, BFT-CRDTs, Sui Lutris, HotStuff, Narwhal/Tusk, FastPay, Mysticeti, Reed–Solomon, PBFT, BFT-SMR survey, Polygraph, and Attested Append-only Memory | URLs and metadata audited in `paper/reference_status.json`; publisher access restrictions are classified explicitly. |
+| Introduction contributions | Already reframed as abstraction, semantics/properties, and executable artifact | Verify final prose does not describe the work primarily as software. |
+| Supporting infrastructure | Settlement, randomness, availability, onboarding, networking, and storage are explicitly supporting layers | Keep them out of the novelty center. |
+| WAN language | Results are labeled `LOCAL_EMULATION`; independent replication is outside the current evaluation | Replace any wording that makes paper validity depend on future WAN deployment. |
+| Reproducibility | Public GitHub repo, fixed final tag, checksums, one-command guide | Completed for `v7.0.0-ectc-paper-final`; push and remote verification remain release steps. |
 
-## Claim classification to preserve
+## Current evidence that must not be conflated
 
-| Claim | Intended status |
+The final daemon long-run reports **184,916.02 bytes per successful operation** from aggregate sent and received counters across the seven-process local rehearsal, with counters by message type. The ECTC workload benchmark reports **3,071.22 non-overlapping protocol bytes per operation** for the current in-process serialized disjoint workload, with explicit Capsule, receipt, closure, StateSeal, framing, and event-log components. These values use different harnesses and accounting domains; the final paper presents both and does not use one as a substitute for the other.
+
+## Claim classification
+
+| Claim | Status |
 |---|---|
-| ECTC lifecycle is executable | Implemented |
-| No application without a valid closure | Model-checked and adversarially tested within declared scope |
-| Predecessor and successor StateSeal binding | Implemented and tested; formal strengthening required |
-| No two incompatible closures under quorum assumptions | Protocol argument plus bounded support check; not an unbounded proof |
-| First-claim non-equivocation | Implemented locally and tested; distributed weighted assumptions must be explicit |
-| Conflict and abandonment evidence preservation | Implemented and tested |
-| Deterministic execution | Tested for the supported instruction kernel |
-| Crash recovery | Experimentally observed in local rehearsal |
-| Byzantine robustness | Local adversarial rehearsal only |
-| WAN liveness | Not evaluated |
-| Permissionless Sybil/economic security | Not established |
-| Performance superiority | Not claimed |
+| ECTC lifecycle is executable | Implemented and tested. |
+| No application without a valid closure | Implemented, adversarially tested, and finitely model-checked within declared scope. |
+| Predecessor and successor StateSeal binding | Implemented and tested; formal strengthening remains bounded. |
+| No two incompatible closures under quorum assumptions | Conditional theorem plus bounded support check; not an unbounded proof. |
+| First-claim non-equivocation | Implemented locally and tested; distributed safety depends on stated assumptions. |
+| Conflict and abandonment evidence preservation | Implemented, tested, and directly measured in the 1,000-operation competing-claims workload. |
+| Deterministic execution | Tested for the supported instruction kernel. |
+| Crash recovery | Observed in local rehearsal. |
+| Byzantine robustness | Local deterministic adversarial rehearsal only. |
+| WAN liveness | Not evaluated; outside the present evaluation scope. |
+| Permissionless Sybil/economic security | Not established. |
+| Performance superiority | Not claimed. |
+| Absolute novelty over all prior work | Not established; the paper claims a specific, falsifiable protocol-semantics composition. |
 
-The upgrade must strengthen the protocol semantics and evidence, not expand the project into zero-knowledge proofs, VDFs, new cryptography, a general smart-contract VM, bridges, wallets, or a public token.
+The upgrade remains focused on protocol semantics and evidence. It does not add ZK, VDF, new cryptography, a general smart-contract VM, bridges, wallets, or a public token.

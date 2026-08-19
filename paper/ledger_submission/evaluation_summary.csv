@@ -1,7 +1,7 @@
 evidence,value,unit,scope
-pytest tests,87,tests,local repository
+pytest tests,102,tests,local repository
 wire fuzz,4000,cases,parser harness
-bounded model checks,8,checks,M1-M8
+bounded model records,12,records,finite ECTC/quorum/availability/execution checks
 long-run nodes,7,nodes,local emulation
 long-run operations,120,operations,local emulation
 long-run successes,120,operations,local emulation
