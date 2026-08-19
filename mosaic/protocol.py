@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 
 from ccd_nexus.crypto import KeyPair, canonical_bytes, digest
 
+from .ectc import ECTCStatus, TransitionOutcome
 from .model import (
     AbandonProof,
     BundleClosure,
@@ -373,6 +374,54 @@ class MosaicProtocol:
             executor.nonces = executor_nonces
             executor.receipts = executor_receipts
             raise
+
+    def transition_outcome(self, capsule: Capsule) -> TransitionOutcome | None:
+        """Return the observed ECTC terminal outcome for ``capsule``.
+
+        A closure proof alone is not treated as a terminal ``Closed`` outcome;
+        the successor StateSeal must also be present.  Before that point the
+        local observation is deliberately ``None`` rather than an opaque
+        success or failure classification.
+        """
+        successor = next(
+            (
+                seal
+                for seal in self.known_seals.values()
+                if seal.resource_id in self.current_seals
+                and seal.version == self.known_seals.get(capsule.predecessor_id, seal).version + 1
+                and seal.state_root == capsule.successor_root
+                and seal.capability_hash == digest(capsule.capsule_id)
+            ),
+            None,
+        )
+        closure = self.closures.get(capsule.capsule_id)
+        if closure is not None and successor is not None:
+            return TransitionOutcome(
+                capsule_id=capsule.capsule_id,
+                predecessor_id=capsule.predecessor_id,
+                status=ECTCStatus.CLOSED,
+                evidence_ids=(closure.proof_id,),
+                successor_seal_id=successor.seal_id,
+            )
+        for evidence in self.conflict_evidence.values():
+            if capsule.capsule_id in {evidence.capsule_a, evidence.capsule_b}:
+                other = evidence.capsule_b if evidence.capsule_a == capsule.capsule_id else evidence.capsule_a
+                return TransitionOutcome(
+                    capsule_id=capsule.capsule_id,
+                    predecessor_id=capsule.predecessor_id,
+                    status=ECTCStatus.CONFLICT,
+                    evidence_ids=(evidence.evidence_id,),
+                    conflicting_capsule_ids=(other,),
+                )
+        abandon = self.abandons.get(capsule.capsule_id)
+        if abandon is not None:
+            return TransitionOutcome(
+                capsule_id=capsule.capsule_id,
+                predecessor_id=capsule.predecessor_id,
+                status=ECTCStatus.ABANDONED,
+                evidence_ids=(abandon.proof_id,),
+            )
+        return None
 
     def bundle_closure(self, bundle_id: str, closures: tuple[ClosureProof, ...]) -> BundleClosure:
         if not closures:

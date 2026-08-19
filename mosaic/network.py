@@ -388,7 +388,11 @@ class MosaicNode:
         except (ConnectionError, OSError) as exc:
             self.metrics["transport_failures"] += 1
             self._status({"event": "transport_failure", "node_id": self.node_id, "error": str(exc)})
-        except (ValueError, KeyError, AttributeError, TypeError) as exc:
+        except ValueError as exc:
+            self.metrics["malformed_frames"] += 1
+            self.metrics["protocol_rejections"] += 1
+            self._status({"event": "malformed_frame", "node_id": self.node_id, "error": str(exc)})
+        except (KeyError, AttributeError, TypeError) as exc:
             self.metrics["errors"] += 1
             name = type(exc).__name__
             self.metrics["error_types"][name] = self.metrics["error_types"].get(name, 0) + 1

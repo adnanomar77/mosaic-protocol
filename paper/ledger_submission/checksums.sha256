@@ -1,13 +1,15 @@
-# MOSAIC Ledger submission checksums
+# MOSAIC ECTC Ledger artifact checksums
 
 Repository: https://github.com/adnanomar77/mosaic-protocol
-Commit: a161ebe5da146728be53f15e7991d84b9f477ddf
-Tests: 87 passed
-Reference URLs audited: 11; Reed1960 publisher page classified as access-restricted after DOI resolution and manually verified from official SIAM record
+Release tag: v6.0.0-ectc-paper
+Tests collected: 101
+Reference URLs audited: 14 (SIAM DOI publisher access classified separately when HTTP automation returned 403)
 
-3208ab0e7367363cfe88e5833271ea7ecf4bcbae7ab95f8611472fbdde5dc2c1  paper/ledger_submission/main.pdf
-c4d90dee096a11a2ad442a4b80220f1cd631f88ed252340f884fe1dcb2c6b7ce  paper/ledger_submission/cover_letter.pdf
-d8cc2fc43c1a8a0b0fbbd3d53325c889604431e1bd0be61f88a9e2d8d8488c89  paper/ledger_submission/main.tex
-1365d6515e986aa718b1f79f0c4f2ee796bc30d8cdd82e65c26e62576e5c27a9  paper/ledger_submission/references.bib
-1791540078eb5fc16442899d6b00548daa68bae561f1d53d1f288387cb136e8b  paper/ledger_submission/cover_letter.tex
-31c2a2a200a79fdefbc2bd7003862e0cb534e28e9a81c413b8128ec1b6b501eb  paper/reference_status.json
+9745fa4f83c6d18f335aa12173631894941bb8bde3c9b9c159a0083bf47314c3  paper/ledger_submission/main.pdf
+3b0ad76817ba110bb7cd9ce1d2cc071226c28c73dd25b8e7b4b263e12a695b27  paper/ledger_submission/cover_letter.pdf
+7e82aa06f54bb2e55f758eb63fa005f5a0fea6e038b3a02a1029549e0f4e66b8  paper/ledger_submission/main.tex
+19b878919803628d3c848fc6dfacbfacc17b6acf1bc9f3764d45810b7300ae29  paper/ledger_submission/references.bib
+84cdbdf9053644800c24e998aa61d7f5e543288d8bf8f2c0c2f2ece3d080fa9e  paper/ledger_submission/cover_letter.tex
+e5569fcacabb220cee2c251bc48a0b3b586fa1dc05e53d9b60518c7951a8f9cd  paper/reference_status.json
+92aeb16416f40928f28cdc63a2c7baee2f85ac667d003e03ef15bd9dd7835cbb  docs/mosaic_ectc_workloads.json
+bd043570a810ac30b8df3b1d896823a6350848ac998ef1c21568b6fff08d9853  docs/mosaic_model_check.json

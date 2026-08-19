@@ -1,0 +1,14 @@
+sequenceDiagram
+    participant P as Proposer
+    participant A as Validator A
+    participant B as Validator B
+    participant L as First-Claim Lock
+    participant E as Evidence Log
+    P->>A: Capsule C1(predecessor P, root S1)
+    P->>B: Capsule C2(predecessor P, root S2)
+    A->>L: lock(P)=C1
+    A-->>P: WitnessReceipt(C1, ACCEPT)
+    B->>L: competing claim C2
+    L-->>B: lock conflict
+    B->>E: ConflictEvidence(C1,C2)
+    E-->>P: auditable conflict artifact

@@ -1,12 +1,12 @@
 # MOSAIC Protocol
 
-MOSAIC (Mutual-Obligation State And Integrity Capsules) is an executable research prototype for a state-transition-centric distributed ledger. Its primary protocol objects are `Capsule`, `WitnessReceipt`, `ClosureProof`, `StateSeal`, `ConflictEvidence`, and `AbandonProof`.
+MOSAIC (Mutual-Obligation State And Integrity Capsules) is an executable research prototype for a state-transition-centric distributed ledger. Its central research semantics is **Evidence-Complete Transition Closure (ECTC)**: an observed Capsule ends in a documented `Closed`, `Conflict`, or `Abandoned` outcome, while an unobserved outcome remains explicitly pending. Its primary protocol objects are `Capsule`, `WitnessReceipt`, `ClosureProof`, `StateSeal`, `ConflictEvidence`, and `AbandonProof`.
 
 The implementation explores whether a ledger can make the authenticated state transition—not only a globally ordered block—the main integrity boundary. It includes a leaderless TCP gossip layer, Ed25519 signatures, optional mTLS, SQLite WAL durability, weighted membership and settlement, commit–reveal randomness, Reed–Solomon availability, deterministic execution, onboarding, beacon networking, availability networking, and a hash-chained event log. The `ccd_nexus` package contains shared cryptographic primitives and legacy domain support used by the MOSAIC implementation.
 
 ## Scientific status
 
-The repository is a research artifact. The current reported evaluation is **LOCAL_EMULATION** on one host: seven daemon processes, 120 operations, a scheduled kill/restart, two Byzantine test identities, and partial-frame probes. The final local run completed 120/120 operations with liveness ratio 1.0, zero unexpected operational errors, p50 37.520503 ms, p95 231.326768 ms, and a verified eight-event hash-chained log. These results do not establish public-WAN performance, permissionless deployment, a production mainnet, or universal superiority over existing ledgers.
+The repository is a research artifact. The current reported evaluation is **LOCAL_EMULATION** on one host: seven daemon processes, 120 operations, a scheduled kill/restart, two Byzantine test identities, and partial-frame probes. The final local run completed 120/120 operations with liveness ratio 1.0, zero unexpected operational errors, p50 37.520503 ms, p95 231.326768 ms, and a verified eight-event hash-chained log. The final revision collects 101 tests and includes a 20-case adversarial matrix, disjoint/contended/batched workloads, validator-process scaling, and byte decomposition. These results do not establish public-WAN performance, permissionless deployment, a production mainnet, or universal superiority over existing ledgers.
 
 ## Requirements
 
@@ -24,7 +24,9 @@ python -m pip install -e '.[test]'
 python3 -m pytest -q
 python3 benchmarks/security_audit.py
 python3 benchmarks/fuzz_mosaic_wire.py
-python3 benchmarks/model_check_mosaic.py
+PYTHONPATH=. python3 -m benchmarks.model_check_mosaic
+PYTHONPATH=. python3 benchmarks/run_mosaic_ectc_workloads.py --operations 1000
+PYTHONPATH=. python3 paper/generate_figures.py
 python3 benchmarks/audit_submission_artifacts.py
 ```
 
@@ -43,7 +45,7 @@ The harness writes JSON metrics and a hash-chained event log. It is intentionall
 
 ## Manuscript and artifacts
 
-The Ledger submission package is under `paper/ledger_submission/`. The source manuscript is `main.tex`; the compiled PDF is generated locally from the official Ledger class; references are in `references.bib`; figures and CSV data are under `figures/` and the submission directory. The main long-run artifact is `testnet/artifacts/mosaic_testnet_long_final.json`, and the event log is under `testnet/events/`.
+The Ledger submission package is under `paper/ledger_submission/`. The source manuscript is `main.tex`; the compiled PDF is generated locally from the official Ledger class; references are in `references.bib`; figures and CSV data are under `figures/` and the submission directory. The ECTC theorem and model are under `formal/`; the adversarial matrix is under `docs/mosaic_adversarial_test_matrix.md`; the workload artifact is `docs/mosaic_ectc_workloads.json`; and the main long-run artifact is `testnet/artifacts/mosaic_testnet_long_final.json`. See `REPRODUCE.md` for the one-command sequence.
 
 The companion research paper is:
 

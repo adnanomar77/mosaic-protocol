@@ -1,0 +1,10 @@
+flowchart LR
+    C[Capsule C] --> V[Validate signature, predecessor, nonce]
+    V --> R[Collect compatible WitnessReceipts]
+    R --> Q{Quorum Q satisfied?}
+    Q -- No --> A[AbandonProof or pending]
+    Q -- Yes --> CP[ClosureProof]
+    CP --> X[Deterministic execution]
+    X --> SR[Successor state root]
+    SR --> SS[StateSeal]
+    SS --> AL[Atomic persist and audit event]

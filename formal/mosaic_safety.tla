@@ -1,10 +1,12 @@
 ------------------------------ MODULE MosaicSafety ------------------------------
-EXTENDS Naturals, FiniteSets, Sequences
+EXTENDS Naturals, FiniteSets
 
 (***************************************************************************)
-(* Bounded safety model for MOSAIC.                                        *)
-(* This model intentionally abstracts cryptographic signatures into the    *)
-(* HonestNonEquivocation assumption and models weighted quorum directly.    *)
+(* Evidence-Complete Transition Closure (ECTC) bounded model.             *)
+(*                                                                         *)
+(* The model abstracts signatures and execution semantics through the     *)
+(* constants below. TLC checks the named invariants within finite sets;    *)
+(* it is not an unbounded theorem prover and does not establish crypto.    *)
 (***************************************************************************)
 
 CONSTANTS
@@ -12,14 +14,55 @@ CONSTANTS
     Byzantine,
     Capsules,
     Resources,
+    StateRoots,
     Threshold,
-    MaxWeight
+    Genesis,
+    None,
+    CapsulePredecessor,
+    CapsuleSuccessor
 
-ASSUME Validators # {} /\ Byzantine \subseteq Validators
+ASSUME Validators # {}
+ASSUME Byzantine \subseteq Validators
+ASSUME Capsules # {}
+ASSUME Resources # {}
+ASSUME StateRoots # {}
 ASSUME Threshold > 0
-ASSUME MaxWeight > 0
+ASSUME Threshold <= Cardinality(Validators)
+ASSUME Genesis \notin Capsules
+ASSUME None \notin Capsules
+ASSUME CapsulePredecessor \in [Capsules -> Capsules \cup {Genesis}]
+ASSUME CapsuleSuccessor \in [Capsules -> StateRoots]
 
 Honest == Validators \ Byzantine
+
+Quorum(q) ==
+    /\ q \subseteq Validators
+    /\ Cardinality(q) >= Threshold
+
+SameContext(c1, c2) ==
+    CapsulePredecessor[c1] = CapsulePredecessor[c2]
+
+Compatible(c1, c2) ==
+    c1 = c2 \/ ~SameContext(c1, c2)
+
+ClosureRecord ==
+    [capsule: Capsules,
+     resource: Resources,
+     predecessor: Capsules \cup {Genesis},
+     successor: StateRoots,
+     quorum: SUBSET Validators]
+
+ConflictRecord ==
+    [resource: Resources,
+     first: Capsules,
+     second: Capsules,
+     predecessor: Capsules \cup {Genesis}]
+
+AbandonRecord ==
+    [resource: Resources,
+     capsule: Capsules,
+     predecessor: Capsules \cup {Genesis},
+     proof: Capsules]
 
 VARIABLES
     current,
@@ -27,87 +70,84 @@ VARIABLES
     closures,
     conflicts,
     abandons,
-    availability,
-    executionState,
-    executionReceipts
+    applied,
+    execution
 
-vars == <<current, locks, closures, conflicts, abandons,
-           availability, executionState, executionReceipts>>
+vars == <<current, locks, closures, conflicts, abandons, applied, execution>>
 
 Init ==
-    /\ current \in [Resources -> Capsules \cup {"GENESIS"}]
-    /\ locks = [r \in Resources |-> [v \in Validators |-> Null]]
+    /\ current \in [Resources -> Capsules \cup {Genesis}]
+    /\ locks = [r \in Resources |-> [v \in Validators |-> None]]
     /\ closures = {}
     /\ conflicts = {}
     /\ abandons = {}
-    /\ availability = {}
-    /\ executionState = [r \in Resources |-> [key \in {} |-> Null]]
-    /\ executionReceipts = {}
-
-ValidQuorum(q) ==
-    /\ q \subseteq Validators
-    /\ Cardinality(q) >= Threshold
-
-HonestDoesNotEquivocate ==
-    \A r \in Resources:
-      \A v \in Honest:
-        Cardinality({c \in Capsules : locks[r][v] = c}) <= 1
-
-Accept(c, r, q) ==
-    /\ c \in Capsules
-    /\ r \in Resources
-    /\ ValidQuorum(q)
-    /\ \A v \in q: locks[r][v] = c
-    /\ c # current[r]
+    /\ applied = {}
+    /\ execution = [c \in Capsules |-> None]
 
 IssueAccept(c, r, v) ==
+    /\ c \in Capsules
+    /\ r \in Resources
     /\ v \in Validators
-    /\ locks[r][v] = Null
+    /\ locks[r][v] = None
     /\ locks' = [locks EXCEPT ![r][v] = c]
-    /\ UNCHANGED <<current, closures, conflicts, abandons,
-                   availability, executionState, executionReceipts>>
+    /\ UNCHANGED <<current, closures, conflicts, abandons, applied, execution>>
 
 RecordConflict(c1, c2, r) ==
-    /\ c1 # c2
     /\ c1 \in Capsules
     /\ c2 \in Capsules
-    /\ conflicts' = conflicts \cup {[resource |-> r, first |-> c1, second |-> c2]}
-    /\ UNCHANGED <<current, locks, closures, abandons,
-                   availability, executionState, executionReceipts>>
+    /\ r \in Resources
+    /\ c1 # c2
+    /\ SameContext(c1, c2)
+    /\ conflicts' = conflicts \cup
+         {[resource |-> r,
+           first |-> c1,
+           second |-> c2,
+           predecessor |-> CapsulePredecessor[c1]]}
+    /\ UNCHANGED <<current, locks, closures, abandons, applied, execution>>
 
 Close(c, r, q) ==
-    /\ Accept(c, r, q)
-    /\ [c, r] \notin closures
-    /\ closures' = closures \cup {[capsule |-> c, resource |-> r, quorum |-> q]}
-    /\ UNCHANGED <<current, locks, conflicts, abandons,
-                   availability, executionState, executionReceipts>>
+    /\ c \in Capsules
+    /\ r \in Resources
+    /\ Quorum(q)
+    /\ current[r] = CapsulePredecessor[c]
+    /\ \A v \in q: locks[r][v] = c
+    /\ closures' = closures \cup
+         {[capsule |-> c,
+           resource |-> r,
+           predecessor |-> CapsulePredecessor[c],
+           successor |-> CapsuleSuccessor[c],
+           quorum |-> q]}
+    /\ UNCHANGED <<current, locks, conflicts, abandons, applied, execution>>
 
 Apply(c, r) ==
-    /\ \E proof \in closures: proof.capsule = c /\ proof.resource = r
+    /\ c \in Capsules
+    /\ r \in Resources
+    /\ \E closure \in closures:
+          closure.capsule = c
+          /\ closure.resource = r
+          /\ closure.predecessor = current[r]
     /\ current' = [current EXCEPT ![r] = c]
-    /\ UNCHANGED <<locks, closures, conflicts, abandons,
-                   availability, executionState, executionReceipts>>
+    /\ applied' = applied \cup {[capsule |-> c, resource |-> r]}
+    /\ UNCHANGED <<locks, closures, conflicts, abandons, execution>>
 
-Abandon(c, r, q) ==
-    /\ Accept(c, r, q) = FALSE
-    /\ [c, r] \notin closures
-    /\ abandons' = abandons \cup {[capsule |-> c, resource |-> r, quorum |-> q]}
-    /\ UNCHANGED <<current, locks, closures, conflicts,
-                   availability, executionState, executionReceipts>>
+Abandon(c, r) ==
+    /\ c \in Capsules
+    /\ r \in Resources
+    /\ c # current[r]
+    /\ \A x \in closures: ~(x.capsule = c /\ x.resource = r)
+    /\ abandons' = abandons \cup
+         {[resource |-> r,
+           capsule |-> c,
+           predecessor |-> CapsulePredecessor[c],
+           proof |-> c]}
+    /\ UNCHANGED <<current, locks, closures, conflicts, applied, execution>>
 
-AvailabilityQuorum(object, q) ==
-    /\ ValidQuorum(q)
-    /\ availability' = availability \cup {[object |-> object, providers |-> q]}
-    /\ UNCHANGED <<current, locks, closures, conflicts, abandons,
-                   executionState, executionReceipts>>
-
-ExecuteAtomically(r, before, after, receipt) ==
-    /\ executionState[r] = before
-    /\ receipt.pre = before
-    /\ receipt.post = after
-    /\ executionState' = [executionState EXCEPT ![r] = after]
-    /\ executionReceipts' = executionReceipts \cup {receipt}
-    /\ UNCHANGED <<current, locks, closures, conflicts, abandons, availability>>
+Execute(c, r) ==
+    /\ c \in Capsules
+    /\ r \in Resources
+    /\ \E a \in applied: a.capsule = c /\ a.resource = r
+    /\ execution' = [execution EXCEPT ![c] = CapsuleSuccessor[c]]
+    /\ UNCHANGED <<current, locks, closures, conflicts, abandons, applied>>
 
 Next ==
     \/ \E c \in Capsules, r \in Resources, v \in Validators:
@@ -118,53 +158,81 @@ Next ==
          Close(c, r, q)
     \/ \E c \in Capsules, r \in Resources:
          Apply(c, r)
-    \/ \E c \in Capsules, r \in Resources, q \subseteq Validators:
-         Abandon(c, r, q)
-    \/ \E object, q \subseteq Validators:
-         AvailabilityQuorum(object, q)
-    \/ \E r \in Resources, before, after, receipt:
-         ExecuteAtomically(r, before, after, receipt)
+    \/ \E c \in Capsules, r \in Resources:
+         Abandon(c, r)
+    \/ \E c \in Capsules, r \in Resources:
+         Execute(c, r)
 
 Spec == Init /\ [][Next]_vars
 
-M1_NoTwoClosures ==
-    \A r \in Resources:
-      \A c1, c2 \in Capsules:
-        (([c1, r] \in { [p.capsule, p.resource] : p \in closures }) /\
-         ([c2, r] \in { [p.capsule, p.resource] : p \in closures }))
-        => c1 = c2
+(***************************************************************************)
+(* Paper invariant mapping                                                 *)
+(***************************************************************************)
 
-M2_NoApplyWithoutClosure ==
-    \A r \in Resources:
-      current[r] # "GENESIS" =>
-        \E proof \in closures: proof.resource = r /\ proof.capsule = current[r]
+I1_NoApplyWithoutClosure ==
+    \A a \in applied:
+      \E closure \in closures:
+        closure.capsule = a.capsule
+        /\ closure.resource = a.resource
 
-M3_ConflictIsEvidence ==
-    \A e \in conflicts: e.first # e.second
+I2_PredecessorBinding ==
+    \A closure \in closures:
+      closure.predecessor = CapsulePredecessor[closure.capsule]
 
-M4_NoClosureAndAbandon ==
-    \A c \in Capsules, r \in Resources:
-      [c, r] \in { [p.capsule, p.resource] : p \in closures }
-      => [c, r] \notin { [p.capsule, p.resource] : p \in abandons }
+I3_SealBinding ==
+    \A closure \in closures:
+      closure.successor = CapsuleSuccessor[closure.capsule]
 
-M5_EpochSeparation == TRUE
+I4_NoTwoIncompatibleClosures ==
+    \A c1, c2 \in Capsules, r \in Resources:
+      (\E x \in closures: x.capsule = c1 /\ x.resource = r)
+      /\ (\E y \in closures: y.capsule = c2 /\ y.resource = r)
+      => Compatible(c1, c2)
 
-M6_AvailabilityRequiresQuorum ==
-    \A a \in availability: ValidQuorum(a.providers)
+I5_FirstClaimNonEquivocation ==
+    \A r \in Resources, v \in Honest:
+      Cardinality({c \in Capsules : locks[r][v] = c}) <= 1
 
-M7_ExecutionReceiptMatchesState ==
-    \A receipt \in executionReceipts: receipt.pre # receipt.post => TRUE
+I6_ConflictEvidencePreserved ==
+    \A e \in conflicts:
+      /\ e.first # e.second
+      /\ e.predecessor = CapsulePredecessor[e.first]
+      /\ e.predecessor = CapsulePredecessor[e.second]
 
-M8_AtomicExecution == TRUE
+I7_AbandonEvidencePreserved ==
+    \A a \in abandons:
+      /\ a.capsule \in Capsules
+      /\ a.proof \in Capsules
+      /\ a.predecessor = CapsulePredecessor[a.capsule]
+      /\ \A x \in closures: ~(x.capsule = a.capsule /\ x.resource = a.resource)
 
-Safety ==
-    /\ M1_NoTwoClosures
-    /\ M2_NoApplyWithoutClosure
-    /\ M3_ConflictIsEvidence
-    /\ M4_NoClosureAndAbandon
-    /\ M5_EpochSeparation
-    /\ M6_AvailabilityRequiresQuorum
-    /\ M7_ExecutionReceiptMatchesState
-    /\ M8_AtomicExecution
+I8_DeterministicExecution ==
+    \A c \in Capsules:
+      execution[c] # None => execution[c] = CapsuleSuccessor[c]
+
+ECTC ==
+    /\ I1_NoApplyWithoutClosure
+    /\ I2_PredecessorBinding
+    /\ I3_SealBinding
+    /\ I4_NoTwoIncompatibleClosures
+    /\ I5_FirstClaimNonEquivocation
+    /\ I6_ConflictEvidencePreserved
+    /\ I7_AbandonEvidencePreserved
+    /\ I8_DeterministicExecution
+
+Safety == ECTC
+
+(***************************************************************************)
+(* Model A theorem boundary                                                *)
+(***************************************************************************)
+
+(***************************************************************************)
+(* For an unweighted committee, assume N >= 3f + 1, every closure quorum    *)
+(* has at least 2f + 1 validators, and honest validators do not sign two    *)
+(* incompatible Capsules in the same resource/epoch context. Two quorums    *)
+(* then intersect in at least one honest validator. That shared honest      *)
+(* signer would violate I5 if both incompatible ClosureProofs existed.      *)
+(* This comment records the theorem boundary; TLC only checks finite cases. *)
+(***************************************************************************)
 
 =============================================================================

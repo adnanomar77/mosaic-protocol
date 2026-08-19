@@ -8,6 +8,23 @@
       "passed": true
     },
     {
+      "name": "ModelB_weighted_quorum_intersection_under_byzantine_weight_at_most_one_third",
+      "threshold": 7,
+      "passed": true
+    },
+    {
+      "name": "I1_I3_closed_requires_closure_and_successor_seal",
+      "passed": true
+    },
+    {
+      "name": "I6_conflict_evidence_preserved",
+      "passed": true
+    },
+    {
+      "name": "I7_abandon_proof_preserved",
+      "passed": true
+    },
+    {
       "name": "M2_apply_requires_verified_closure",
       "passed": true
     },

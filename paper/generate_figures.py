@@ -81,3 +81,59 @@ print("wrote", FIGURES / "long_run_latency_comparison.png")
 print("wrote", FIGURES / "long_run_latency_comparison.pdf")
 print("wrote", DATA / "long_run_latency.csv")
 print("wrote", DATA / "evaluation_summary.csv")
+
+
+with (ROOT / "docs/mosaic_ectc_workloads.json").open(encoding="utf-8") as handle:
+    workload_rows = json.load(handle)["results"]
+with (DATA / "ectc_workloads.csv").open("w", encoding="utf-8") as handle:
+    columns = list(workload_rows[0].keys())
+    handle.write(",".join(columns) + "\n")
+    for row in workload_rows:
+        handle.write(",".join(str(row[column]) for column in columns) + "\n")
+
+selected = [
+    row for row in workload_rows
+    if (row["mode"] == "disjoint" and row["batch_size"] == 1)
+    or (row["mode"] == "contended" and row["batch_size"] == 1)
+    or (row["mode"] == "batched" and row["batch_size"] in {10, 100})
+]
+labels = [
+    "disjoint",
+    "same resource",
+    "batch 10",
+    "batch 100",
+]
+x = np.arange(len(selected))
+width = 0.34
+fig, ax = plt.subplots(figsize=(6.4, 3.8), constrained_layout=True)
+p50 = np.array([row["latency_ms_p50"] for row in selected], dtype=float)
+p95 = np.array([row["latency_ms_p95"] for row in selected], dtype=float)
+b1 = ax.bar(x - width / 2, p50, width, label="p50", color="#6a1b75")
+b2 = ax.bar(x + width / 2, p95, width, label="p95", color="#9e9e9e")
+ax.set_ylabel("Per-operation latency (ms)")
+ax.set_xticks(x, labels)
+ax.set_title("ECTC workload and batching measurements")
+ax.grid(axis="y", color="#dddddd", linewidth=0.5)
+ax.legend(frameon=False, ncols=2)
+for bars in (b1, b2):
+    for bar in bars:
+        value = bar.get_height()
+        ax.annotate(f"{value:.2f}", xy=(bar.get_x() + bar.get_width() / 2, value), xytext=(0, 3), textcoords="offset points", ha="center", va="bottom", fontsize=7)
+fig.savefig(FIGURES / "ectc_workload_latency.png", bbox_inches="tight")
+fig.savefig(FIGURES / "ectc_workload_latency.pdf", bbox_inches="tight")
+plt.close(fig)
+
+scaling = [row for row in workload_rows if row["mode"] == "scaling"]
+fig, ax = plt.subplots(figsize=(5.8, 3.6), constrained_layout=True)
+ax.plot([row["validators"] for row in scaling], [row["throughput_ops_s"] for row in scaling], marker="o", color="#6a1b75")
+ax.set_xlabel("Validator processes")
+ax.set_ylabel("Serialized operations/s")
+ax.set_title("Local scaling sweep (disjoint workload)")
+ax.grid(color="#dddddd", linewidth=0.5)
+fig.savefig(FIGURES / "ectc_scaling.png", bbox_inches="tight")
+fig.savefig(FIGURES / "ectc_scaling.pdf", bbox_inches="tight")
+plt.close(fig)
+
+print("wrote", FIGURES / "ectc_workload_latency.png")
+print("wrote", FIGURES / "ectc_scaling.png")
+print("wrote", DATA / "ectc_workloads.csv")

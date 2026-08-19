@@ -1,6 +1,6 @@
 {
   "source": "paper/ledger_submission/references.bib",
-  "checked": 11,
+  "checked": 14,
   "results": [
     {
       "key": "Nakamoto2008",
@@ -98,6 +98,33 @@
       "scheme": "https",
       "status": 200,
       "final_url": "https://github.com/adnanomar77/mosaic-protocol",
+      "error": null,
+      "status_class": "ok"
+    },
+    {
+      "key": "Balakrishnan2013Tango",
+      "url": "https://dl.acm.org/doi/abs/10.1145/2517349.2522732",
+      "scheme": "https",
+      "status": 403,
+      "final_url": "https://dl.acm.org/doi/abs/10.1145/2517349.2522732",
+      "error": null,
+      "status_class": "http_error"
+    },
+    {
+      "key": "Gelashvili2022BlockSTM",
+      "url": "https://arxiv.org/abs/2203.06871",
+      "scheme": "https",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2203.06871",
+      "error": null,
+      "status_class": "ok"
+    },
+    {
+      "key": "Frey2024BFTCRDT",
+      "url": "https://arxiv.org/abs/2311.13936",
+      "scheme": "https",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2311.13936",
       "error": null,
       "status_class": "ok"
     }

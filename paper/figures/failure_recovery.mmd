@@ -1,0 +1,11 @@
+flowchart LR
+    I[Incoming Capsule] --> P{Predecessor restored?}
+    P -- No --> Q[Pending / retryable rejection]
+    Q --> W[WAL restores seals and closures]
+    W --> R[Retry validation]
+    P -- Yes --> V[Validate and process]
+    V --> C{Crash or restart?}
+    C -- Yes --> W
+    C -- No --> O[Closed, Conflict, or Abandoned]
+    R --> O
+    O --> E[Hash-chained event]

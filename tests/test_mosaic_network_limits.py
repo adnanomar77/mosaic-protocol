@@ -62,3 +62,22 @@ def test_peer_rate_limit_does_not_kill_server():
         assert node.metrics["rate_limited"] >= 1
 
     asyncio.run(exercise())
+
+
+def test_oversized_frame_is_rejected_without_killing_server():
+    node = make_node()
+
+    async def exercise():
+        server = await asyncio.start_server(node._handle, "127.0.0.1", 0)
+        port = server.sockets[0].getsockname()[1]
+        async with server:
+            reader, writer = await asyncio.open_connection("127.0.0.1", port)
+            writer.write(struct.pack("!I", 4 * 1024 * 1024 + 1))
+            await writer.drain()
+            await asyncio.sleep(0.05)
+            assert await reader.read() == b""
+            writer.close()
+            await writer.wait_closed()
+        assert node.metrics["malformed_frames"] >= 1
+
+    asyncio.run(exercise())

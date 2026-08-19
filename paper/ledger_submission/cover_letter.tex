@@ -5,8 +5,8 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage{enumitem}
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{0.55em}
-\setlist[enumerate]{leftmargin=1.7em,itemsep=0.25em,topsep=0.2em}
+\setlength{\parskip}{0.52em}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=0.22em,topsep=0.2em}
 \begin{document}
 
 {\Large\bfseries Cover Letter}\par
@@ -18,17 +18,21 @@ Dear Editors,
 
 I submit the manuscript \textbf{“MOSAIC: State-Transition-Centric Integrity Capsules for Distributed Ledger Execution”} for consideration as a full-length research article in \emph{Ledger}.
 
-The manuscript presents MOSAIC (Mutual-Obligation State And Integrity Capsules), an executable distributed-ledger protocol prototype organized around an authenticated state-transition lifecycle rather than treating a globally ordered block as the only integrity boundary. A Capsule names a predecessor StateSeal, operation, nonce, and witness obligations. Compatible WitnessReceipts and a ClosureProof authorize a deterministic successor root, while conflicting claims remain available as signed ConflictEvidence or an AbandonProof. The implementation connects this lifecycle to leaderless dissemination, durable SQLite WAL recovery, Ed25519 signatures, weighted membership and settlement, commit--reveal randomness, Reed--Solomon availability, deterministic execution, onboarding, and a hash-chained event log.
+The manuscript introduces \emph{Evidence-Complete Transition Closure} (ECTC), a protocol semantics in which a state transition is not terminal merely because a validator accepted it. A Capsule must reach a verifiable \emph{Closed} outcome carrying a ClosureProof and successor StateSeal, a \emph{Conflict} outcome carrying ConflictEvidence, or an \emph{Abandoned} outcome carrying an AbandonProof. The proposed lifecycle binds predecessor state, transition claim, witness obligation, and successor state while preserving incompatible and abandoned claims as independently inspectable artifacts.
 
-The paper is deliberately bounded in its claims. In a seven-process local rehearsal with two Byzantine test identities, a scheduled kill/restart, and partial-frame probes, all 120 requested operations succeeded. The measured liveness ratio was 1.0, unexpected operational errors were zero, median latency was 37.520503 ms, and p95 latency was 231.326768 ms. These measurements are explicitly identified as LOCAL\_EMULATION results from one host. They are not presented as Internet-WAN measurements, proof of permissionless Sybil resistance, a production-mainnet claim, or evidence of universal superiority over HotStuff, Narwhal/Tusk, FastPay, Sui Lutris, Mysticeti, or any other ledger. The manuscript instead makes a reproducible protocol-composition claim and identifies the independent-WAN, formal, economic, and comparative experiments still required.
+The paper makes three contributions. First, it defines and implements the Capsule--WitnessReceipt--first-claim lock--ClosureProof--StateSeal lifecycle and the ECTC outcome classifier. Second, it states eight protocol invariants, separates an unweighted BFT quorum model from a weighted extension, and gives a conditional quorum-intersection argument for closure exclusivity. The corresponding TLA+ model and executable checks are explicitly bounded and are not presented as an unbounded formal proof. Third, it supplies a reproducible artifact with adversarial state-machine tests, disjoint-versus-same-resource workloads, batching measurements, validator-process scaling, byte decomposition, and crash/recovery evaluation.
 
-The work is relevant to \emph{Ledger} because it addresses a general problem in cryptocurrency and distributed-ledger protocol design: how state transitions, conflicting claims, execution results, availability evidence, and recovery decisions can be represented as one auditable object lifecycle. The proposed design is not tied to one application, token, or vendor. The public repository contains the source code, tests, formal model, benchmark drivers, figures, tabular data, JSON artifacts, and event logs needed to inspect and reproduce the reported local experiment:
+The implementation currently collects 101 automated tests. The model checker checks the unweighted intersection property over 84 finite committee cases and 36,703 quorum pairs, plus weighted and ECTC checks. In a 1,000-operation serialized local workload, disjoint and same-resource cases measured 3.64/5.18 ms and 3.56/4.46 ms p50/p95 latency, respectively. Batch sizes of 10 and 100 measured 2,530.77 and 2,473.96 protocol bytes per successful operation. A seven-process local rehearsal with two Byzantine test identities, a kill/restart, and 24 partial-frame probes completed all 120 operations with liveness 1.0, zero unexpected operational errors, p50 37.52 ms, and p95 231.33 ms.
+
+The manuscript deliberately labels these results \texttt{LOCAL\_EMULATION}. They are not Internet-WAN measurements, permissionless Sybil-resistance evidence, production-mainnet evidence, or a claim of superiority over HotStuff, Narwhal/Tusk, FastPay, Sui Lutris, Mysticeti, Block-STM, or BFT-object systems. The related-work section treats object-centric execution, optimistic concurrency, selective ordering, and BFT CRDTs as prior art. The scientific claim is narrower: ECTC makes terminal positive and negative transition outcomes explicit and auditable.
+
+The public research artifact is available at:
 
 \url{https://github.com/adnanomar77/mosaic-protocol}
 
-The repository is public and excludes private keys, credentials, and local virtual environments. The code is released under Apache-2.0; the manuscript and documentation are released under CC BY 4.0 where applicable.
+It contains the source, tests, formal model, benchmark drivers, adversarial matrix, Mermaid sources, rendered figures, CSV data, JSON results, and checksums. Code is released under Apache-2.0; manuscript and documentation are released under CC BY 4.0 where applicable. The repository excludes private keys, credentials, virtual environments, and runtime WAL data.
 
-An AI-assisted software and language workflow was used during development and manuscript preparation for code inspection, drafting support, organization, and language editing. The author reviewed the implementation, ran the experiments, checked the cited sources, verified the reported numbers, and remains solely responsible for the manuscript, its claims, its limitations, and the final submission. This use is disclosed in the manuscript in accordance with \emph{Ledger}'s AI policy.
+An AI-assisted software and language workflow was used for code inspection, drafting support, organization, and language editing. The author ran the experiments, reviewed the implementation, checked the sources and reported values, and remains solely responsible for the manuscript, claims, limitations, and final submission. This use is disclosed in the manuscript in accordance with \emph{Ledger}'s AI policy.
 
 The manuscript is original, is not under consideration elsewhere, and has not been published in a peer-reviewed venue. No external funding was received. The author declares no known conflicts of interest relevant to this submission.
 

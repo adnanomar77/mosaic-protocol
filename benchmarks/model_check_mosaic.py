@@ -13,6 +13,7 @@ from pathlib import Path
 from ccd_nexus import KeyPair
 from mosaic import (
     AvailabilityAttestation,
+    ECTCStatus,
     AvailabilityCertificate,
     BundleClosure,
     ClosureInvalid,
@@ -23,6 +24,8 @@ from mosaic import (
     ExecutionTransaction,
     Member,
     MosaicProtocol,
+    weighted_honest_intersection,
+    weighted_quorum_threshold,
 )
 from mosaic.model import Capsule, ClosureProof
 
@@ -71,6 +74,66 @@ def check_quorum_intersection() -> dict:
         "quorum_pairs_checked": checked_pairs,
         "passed": True,
     }
+
+
+def check_weighted_quorum_extension() -> dict:
+    weights = {"a": 4, "b": 3, "c": 2, "d": 1}
+    threshold = weighted_quorum_threshold(weights)
+    assert threshold == 7
+    valid = weighted_honest_intersection(weights, {"a", "b"}, {"a", "c", "d"}, {"d"})
+    invalid = weighted_honest_intersection(weights, {"a", "b"}, {"c", "d"}, {"d"})
+    assert valid and not invalid
+    return {
+        "name": "ModelB_weighted_quorum_intersection_under_byzantine_weight_at_most_one_third",
+        "threshold": threshold,
+        "passed": True,
+    }
+
+
+def check_ectc_outcomes() -> list[dict]:
+    protocol, client, predecessor = make_protocol()
+    closed_capsule = protocol.create_capsule(
+        client=client, predecessor=predecessor, successor_root="closed-state"
+    )
+    closure = protocol.close(closed_capsule)
+    assert protocol.transition_outcome(closed_capsule) is None
+    protocol.apply(closed_capsule, closure)
+    closed = protocol.transition_outcome(closed_capsule)
+    assert closed is not None and closed.status is ECTCStatus.CLOSED and closed.is_evidence_complete()
+
+    conflict_protocol, conflict_client, conflict_predecessor = make_protocol()
+    first = conflict_protocol.create_capsule(
+        client=conflict_client, predecessor=conflict_predecessor, successor_root="first"
+    )
+    second = Capsule.create(
+        client=conflict_client,
+        predecessor=conflict_predecessor,
+        successor_root="second",
+        rule_id="identity-transition",
+        rule_witness="valid",
+    )
+    conflict_protocol.witness_receipt("w0", first, "ACCEPT")
+    try:
+        conflict_protocol.witness_receipt("w0", second, "ACCEPT")
+    except ConflictDetected:
+        pass
+    else:
+        raise AssertionError("expected conflict evidence")
+    conflict = conflict_protocol.transition_outcome(second)
+    assert conflict is not None and conflict.status is ECTCStatus.CONFLICT and conflict.is_evidence_complete()
+
+    abandon_protocol, abandon_client, abandon_predecessor = make_protocol()
+    abandoned_capsule = abandon_protocol.create_capsule(
+        client=abandon_client, predecessor=abandon_predecessor, successor_root="abandoned"
+    )
+    abandon_protocol.abandon(abandoned_capsule)
+    abandoned = abandon_protocol.transition_outcome(abandoned_capsule)
+    assert abandoned is not None and abandoned.status is ECTCStatus.ABANDONED and abandoned.is_evidence_complete()
+    return [
+        {"name": "I1_I3_closed_requires_closure_and_successor_seal", "passed": True},
+        {"name": "I6_conflict_evidence_preserved", "passed": True},
+        {"name": "I7_abandon_proof_preserved", "passed": True},
+    ]
 
 
 def check_protocol_invariants() -> list[dict]:
@@ -210,7 +273,12 @@ def check_protocol_invariants() -> list[dict]:
 
 
 def run_checks() -> dict:
-    results = [check_quorum_intersection(), *check_protocol_invariants()]
+    results = [
+        check_quorum_intersection(),
+        check_weighted_quorum_extension(),
+        *check_ectc_outcomes(),
+        *check_protocol_invariants(),
+    ]
     return {
         "scope": "bounded exhaustive small-state model check; cryptographic verification uses the reference implementation",
         "results": results,
