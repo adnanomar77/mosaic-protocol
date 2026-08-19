@@ -1,0 +1,37 @@
+flowchart LR
+    C[Client operation] --> P[Capsule
+predecessor seal + rule witness]
+    P --> W[Witness receipts]
+    W --> L[First-Claim lock
+per resource]
+    L --> X{Conflict?}
+    X -->|yes| E[ConflictEvidence
+or AbandonProof]
+    X -->|no| CP[ClosureProof
+quorum + witnesses]
+    CP --> EX[Deterministic execution
+nonce + gas + state root]
+    EX --> SS[Successor StateSeal]
+    SS --> P
+
+    N[Leaderless TCP gossip
+Ed25519 + mTLS] <--> P
+    N --> WAL[SQLite WAL
+snapshots + restore]
+    WAL --> SS
+    SL[SettlementLedger
+bond + slash + rewards + fees] --> W
+    B[Commit-reveal beacon
+fallback + incentives] --> L
+    A[Availability layer
+k+m shards + sampling + repair] --> CP
+    OBS[Hash-chained event log
+incidents + upgrades] --> N
+    OBS --> SL
+    OBS --> B
+    OBS --> A
+
+    classDef core fill:#eee,stroke:#222,stroke-width:1px,color:#111;
+    classDef support fill:#f5e8f7,stroke:#6a1b75,stroke-width:1px,color:#111;
+    class P,W,L,CP,EX,SS core;
+    class C,X,E,N,WAL,SL,B,A,OBS support;

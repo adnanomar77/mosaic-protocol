@@ -1,0 +1,25 @@
+sequenceDiagram
+    participant C as Client
+    participant V1 as Validator A
+    participant V2 as Validator B
+    participant V3 as Validator C
+    participant S as State store
+    participant E as Event log
+
+    C->>V1: Submit Capsule(predecessor seal, operation)
+    V1->>S: Validate predecessor and nonce
+    V1->>V2: Gossip Capsule
+    V1->>V3: Gossip Capsule
+    V2-->>V1: WitnessReceipt ACCEPT
+    V3-->>V1: WitnessReceipt ACCEPT
+    V1->>V1: First-Claim Lock
+    alt competing capsule for same resource
+        V1->>E: Append ConflictEvidence
+        V1-->>C: Protocol rejection with evidence
+    else quorum of witnesses
+        V1->>V1: Construct ClosureProof
+        V1->>S: Deterministic execution and successor root
+        S-->>V1: Successor StateSeal
+        V1->>E: Append closure and state transition
+        V1-->>C: ClosureProof + successor seal
+    end

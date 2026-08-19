@@ -1,0 +1,133 @@
+{
+  "network": "mosaic-testnet-0",
+  "protocol_version": "MOSAIC/TESTNET/v1",
+  "chain_id": "mosaic-testnet-0",
+  "ssh_user": "ubuntu",
+  "nodes": [
+    {
+      "node_id": "w0",
+      "host": "validator-0.example.net",
+      "bind_host": "0.0.0.0",
+      "advertise_host": "validator-0.example.net",
+      "port": 20300,
+      "role": "validator+availability",
+      "region": "REPLACE_REGION_0",
+      "private_key_path": "/etc/mosaic/keys/w0.ed25519",
+      "tls_cert_path": "/etc/mosaic/tls/w0.crt",
+      "tls_key_path": "/etc/mosaic/tls/w0.key",
+      "tls_ca_path": "/etc/mosaic/tls/ca.crt",
+      "data_dir": "/var/lib/mosaic/w0",
+      "log_dir": "/var/log/mosaic/w0"
+    },
+    {
+      "node_id": "w1",
+      "host": "validator-1.example.net",
+      "bind_host": "0.0.0.0",
+      "advertise_host": "validator-1.example.net",
+      "port": 20300,
+      "role": "validator+availability",
+      "region": "REPLACE_REGION_1",
+      "private_key_path": "/etc/mosaic/keys/w1.ed25519",
+      "tls_cert_path": "/etc/mosaic/tls/w1.crt",
+      "tls_key_path": "/etc/mosaic/tls/w1.key",
+      "tls_ca_path": "/etc/mosaic/tls/ca.crt",
+      "data_dir": "/var/lib/mosaic/w1",
+      "log_dir": "/var/log/mosaic/w1"
+    },
+    {
+      "node_id": "w2",
+      "host": "validator-2.example.net",
+      "bind_host": "0.0.0.0",
+      "advertise_host": "validator-2.example.net",
+      "port": 20300,
+      "role": "validator+availability",
+      "region": "REPLACE_REGION_2",
+      "private_key_path": "/etc/mosaic/keys/w2.ed25519",
+      "tls_cert_path": "/etc/mosaic/tls/w2.crt",
+      "tls_key_path": "/etc/mosaic/tls/w2.key",
+      "tls_ca_path": "/etc/mosaic/tls/ca.crt",
+      "data_dir": "/var/lib/mosaic/w2",
+      "log_dir": "/var/log/mosaic/w2"
+    },
+    {
+      "node_id": "w3",
+      "host": "validator-3.example.net",
+      "bind_host": "0.0.0.0",
+      "advertise_host": "validator-3.example.net",
+      "port": 20300,
+      "role": "validator+availability",
+      "region": "REPLACE_REGION_3",
+      "private_key_path": "/etc/mosaic/keys/w3.ed25519",
+      "tls_cert_path": "/etc/mosaic/tls/w3.crt",
+      "tls_key_path": "/etc/mosaic/tls/w3.key",
+      "tls_ca_path": "/etc/mosaic/tls/ca.crt",
+      "data_dir": "/var/lib/mosaic/w3",
+      "log_dir": "/var/log/mosaic/w3"
+    },
+    {
+      "node_id": "w4",
+      "host": "validator-4.example.net",
+      "bind_host": "0.0.0.0",
+      "advertise_host": "validator-4.example.net",
+      "port": 20300,
+      "role": "validator+availability",
+      "region": "REPLACE_REGION_4",
+      "private_key_path": "/etc/mosaic/keys/w4.ed25519",
+      "tls_cert_path": "/etc/mosaic/tls/w4.crt",
+      "tls_key_path": "/etc/mosaic/tls/w4.key",
+      "tls_ca_path": "/etc/mosaic/tls/ca.crt",
+      "data_dir": "/var/lib/mosaic/w4",
+      "log_dir": "/var/log/mosaic/w4"
+    },
+    {
+      "node_id": "w5",
+      "host": "validator-5.example.net",
+      "bind_host": "0.0.0.0",
+      "advertise_host": "validator-5.example.net",
+      "port": 20300,
+      "role": "validator+availability",
+      "region": "REPLACE_REGION_5",
+      "private_key_path": "/etc/mosaic/keys/w5.ed25519",
+      "tls_cert_path": "/etc/mosaic/tls/w5.crt",
+      "tls_key_path": "/etc/mosaic/tls/w5.key",
+      "tls_ca_path": "/etc/mosaic/tls/ca.crt",
+      "data_dir": "/var/lib/mosaic/w5",
+      "log_dir": "/var/log/mosaic/w5"
+    },
+    {
+      "node_id": "w6",
+      "host": "validator-6.example.net",
+      "bind_host": "0.0.0.0",
+      "advertise_host": "validator-6.example.net",
+      "port": 20300,
+      "role": "validator+availability",
+      "region": "REPLACE_REGION_6",
+      "private_key_path": "/etc/mosaic/keys/w6.ed25519",
+      "tls_cert_path": "/etc/mosaic/tls/w6.crt",
+      "tls_key_path": "/etc/mosaic/tls/w6.key",
+      "tls_ca_path": "/etc/mosaic/tls/ca.crt",
+      "data_dir": "/var/lib/mosaic/w6",
+      "log_dir": "/var/log/mosaic/w6"
+    }
+  ],
+  "security": {
+    "tls_mode": "mutual",
+    "private_key_policy": "one-node-one-key",
+    "never_commit_private_keys": true,
+    "firewall_ingress": [20300],
+    "ssh_ingress": "operator_allowlist_only"
+  },
+  "economics": {
+    "minimum_stake": "REPLACE_VALUE",
+    "withdrawal_delay_epochs": 3,
+    "non_reveal_penalty": "REPLACE_VALUE",
+    "reveal_reward": "REPLACE_VALUE",
+    "treasury_account": "REPLACE_TREASURY_ACCOUNT"
+  },
+  "availability": {
+    "data_shards": 5,
+    "parity_shards": 3,
+    "sampling_per_round": 2,
+    "repair_grace_epochs": 2
+  }
+}

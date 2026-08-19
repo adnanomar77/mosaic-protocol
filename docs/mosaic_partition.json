@@ -1,0 +1,59 @@
+{
+  "nodes": 4,
+  "partition_groups": [
+    [
+      "w0",
+      "w1"
+    ],
+    [
+      "w2",
+      "w3"
+    ]
+  ],
+  "partition_liveness_stopped": true,
+  "partition_response": {
+    "capsule_id": "f4abede948c5fd781f9cfbe44b1511f4d47fbe2dc5048e986a96fa914a8759c4",
+    "error": "closure timeout",
+    "ok": false
+  },
+  "healed": true,
+  "healed_response": {
+    "capsule_id": "f4abede948c5fd781f9cfbe44b1511f4d47fbe2dc5048e986a96fa914a8759c4",
+    "closure_id": "6dabb508e274f1ffbf0d727ecc3392fb690fecd0ad41341f568e9df6552ab7d5",
+    "finality_ms": 11.0344,
+    "next_seal": {
+      "capability_hash": "bcecea5d313f1ce2f0fee946274ad8a0ede907dee2622f53cf24d6bd1caf8557",
+      "epoch": 0,
+      "owner": "ec3cbbb89108d52a1768c6e8b4150ae6",
+      "resource_id": "asset",
+      "state_root": "partition-state",
+      "version": 1
+    },
+    "ok": true
+  },
+  "restarted_counts": {
+    "w0": {
+      "capsules": 1,
+      "closures": 1
+    },
+    "w1": {
+      "capsules": 1,
+      "closures": 1
+    },
+    "w2": {
+      "capsules": 1,
+      "closures": 1
+    },
+    "w3": {
+      "capsules": 1,
+      "closures": 1
+    }
+  },
+  "store_integrity": {
+    "w0": true,
+    "w1": true,
+    "w2": true,
+    "w3": true
+  },
+  "success": true
+}

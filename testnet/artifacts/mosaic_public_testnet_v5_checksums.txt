@@ -1,0 +1,10 @@
+# MOSAIC v5 artifact checksums
+# generated after pytest, churn v5, and long-run v5
+3f70a0b484df6a77cb83f2eaeb4292cbcba9bebc68f3ca7723161016a90c2178  testnet/artifacts/mosaic_testnet_long_final.json
+ca84130e64cbd93ddc8973c9332db5aabd3caa94f2a098159f56986de3f58fd2  testnet/events/testnet-0-v5.jsonl
+c75b9c94546c979f88ed33cc6f86959c1bcc55e8541cccc8eccf36f6e37b706b  docs/mosaic_testnet_long_ar.md
+3a1f98321a5a3723903bb785c54b1147f3f098ea2944c266eb8903080d8a3cdd  docs/MOSAIC_public_testnet_gate_final_ar.md
+85d7c4525365558324a58b6a74e9a3c9deaf2da89f1881dbd785f611ef8748ac  mosaic/network.py
+89227b5e68155f30286ca3f16c303e8e83623b5a4edea11c86a5135526cfa998  benchmarks/run_mosaic_churn.py
+
+collected_tests=87

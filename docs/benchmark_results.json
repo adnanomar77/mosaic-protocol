@@ -1,0 +1,42 @@
+{
+  "configuration": {
+    "validators": 4,
+    "operations": 25
+  },
+  "results": [
+    {
+      "workload": "single_domain_independent",
+      "operations": 25,
+      "elapsed_ms": 170.0135,
+      "throughput_ops_s": 147.0471,
+      "finality_p50_ms": 5.81,
+      "finality_p95_ms": 10.2913,
+      "message_count": 300,
+      "bytes_per_operation": 3736.8,
+      "prototype_scope": "single-process; signatures and quorum logic included; network transport excluded"
+    },
+    {
+      "workload": "single_domain_conflict",
+      "operations": 25,
+      "elapsed_ms": 159.0083,
+      "throughput_ops_s": 157.2245,
+      "finality_p50_ms": 5.6118,
+      "finality_p95_ms": 8.4147,
+      "message_count": 300,
+      "bytes_per_operation": 3736.8,
+      "prototype_scope": "single-process; signatures and quorum logic included; network transport excluded"
+    },
+    {
+      "workload": "multi_domain_join",
+      "operations": 25,
+      "elapsed_ms": 361.7534,
+      "throughput_ops_s": 69.1078,
+      "finality_p50_ms": 13.6237,
+      "finality_p95_ms": 19.0655,
+      "message_count": 700,
+      "bytes_per_operation": 9845.6,
+      "prototype_scope": "single-process; signatures and quorum logic included; network transport excluded"
+    }
+  ],
+  "warning": "Local single-process prototype measurements; literature profiles are not mixed with these values."
+}

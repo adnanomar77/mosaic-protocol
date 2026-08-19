@@ -1,0 +1,25 @@
+{
+  "checks": {
+    "mosaic_churn_byzantine_final.json": {
+      "exists": true,
+      "json_valid": true
+    },
+    "mosaic_binary_comparison.json": {
+      "exists": true,
+      "json_valid": true
+    },
+    "mosaic_model_check_final.json": {
+      "exists": true,
+      "json_valid": true
+    },
+    "mosaic_security_audit.json": {
+      "exists": true,
+      "json_valid": true
+    },
+    "mosaic_wire_fuzz.json": {
+      "exists": true,
+      "json_valid": true
+    }
+  },
+  "passed": true
+}

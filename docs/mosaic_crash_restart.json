@@ -1,0 +1,63 @@
+{
+  "nodes": 4,
+  "pre_crash_operations": 2,
+  "crash_target": "w1",
+  "request_interrupted": true,
+  "interrupted_response": {
+    "ok": false,
+    "error": "request interrupted by crash: ConnectionResetError"
+  },
+  "recovery_response": {
+    "capsule_id": "9de82b5a1760b9f32efedc057aefcc8aafed956c75c8461aac9ec956a8068f1a",
+    "closure_id": "97b8aa1e5614a07a7c5ad1dc007af84295c95177a204ec4781ef0897711f4dbd",
+    "finality_ms": 16.7466,
+    "next_seal": {
+      "capability_hash": "db45848d013f80cbb921b7e917933d6ea8068d1e749d4cb17d592ea61d4b34c8",
+      "epoch": 0,
+      "owner": "d09c29d6b5eeb2e90d7f1adc9872e018",
+      "resource_id": "asset",
+      "state_root": "state-3",
+      "version": 3
+    },
+    "ok": true
+  },
+  "final_response": {
+    "capsule_id": "091060728f495698625d02aac9fd17ec8a4f23e62287e200cf2fd0e735b3d715",
+    "closure_id": "85f1c9f314a3c913741e3ef107da6d5b7e1f3e40b846156d902c886130c330db",
+    "finality_ms": 14.242,
+    "next_seal": {
+      "capability_hash": "24a8a0f6eadb3bafe9c7a5dadd437177e5fa958429aa19bcdefbc92db690bd3d",
+      "epoch": 0,
+      "owner": "d09c29d6b5eeb2e90d7f1adc9872e018",
+      "resource_id": "asset",
+      "state_root": "state-4",
+      "version": 4
+    },
+    "ok": true
+  },
+  "metrics_after_restart": {
+    "metrics": {
+      "closures_issued": 0,
+      "conflicts": 0,
+      "dropped_messages": 0,
+      "errors": 0,
+      "rate_limited": 0,
+      "received_bytes": 23,
+      "received_messages": 1,
+      "replay_rejected": 0,
+      "retries": 0,
+      "sent_bytes": 0,
+      "sent_messages": 0
+    },
+    "node_id": "w1",
+    "ok": true
+  },
+  "persisted_counts_on_reopen": {
+    "capsule": 4,
+    "receipt": 16,
+    "closure": 7,
+    "seal_current": 1
+  },
+  "store_integrity": true,
+  "success": true
+}

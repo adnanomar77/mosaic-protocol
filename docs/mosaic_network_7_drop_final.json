@@ -1,0 +1,140 @@
+{
+  "nodes": 7,
+  "operations_requested": 5,
+  "operations_successful": 5,
+  "delay_ms": 1.0,
+  "drop_rate": 0.1,
+  "byzantine_id": null,
+  "p50_ms": 31.988882,
+  "p95_ms": 34.579232,
+  "durations_ms": [
+    25.585186,
+    31.433586,
+    31.988882,
+    34.579232,
+    39.459706
+  ],
+  "node_metrics": [
+    {
+      "metrics": {
+        "closures_issued": 5,
+        "conflicts": 0,
+        "dropped_messages": 6,
+        "errors": 0,
+        "rate_limited": 0,
+        "received_bytes": 47779,
+        "received_messages": 48,
+        "replay_rejected": 16,
+        "retries": 6,
+        "sent_bytes": 89238,
+        "sent_messages": 66
+      },
+      "node_id": "w0",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "closures_issued": 5,
+        "conflicts": 0,
+        "dropped_messages": 11,
+        "errors": 0,
+        "rate_limited": 0,
+        "received_bytes": 50398,
+        "received_messages": 49,
+        "replay_rejected": 15,
+        "retries": 10,
+        "sent_bytes": 88695,
+        "sent_messages": 65
+      },
+      "node_id": "w1",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "closures_issued": 5,
+        "conflicts": 0,
+        "dropped_messages": 10,
+        "errors": 0,
+        "rate_limited": 0,
+        "received_bytes": 50398,
+        "received_messages": 49,
+        "replay_rejected": 15,
+        "retries": 10,
+        "sent_bytes": 89238,
+        "sent_messages": 66
+      },
+      "node_id": "w2",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "closures_issued": 4,
+        "conflicts": 0,
+        "dropped_messages": 5,
+        "errors": 0,
+        "rate_limited": 0,
+        "received_bytes": 44968,
+        "received_messages": 47,
+        "replay_rejected": 18,
+        "retries": 5,
+        "sent_bytes": 72042,
+        "sent_messages": 54
+      },
+      "node_id": "w3",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "closures_issued": 5,
+        "conflicts": 0,
+        "dropped_messages": 5,
+        "errors": 0,
+        "rate_limited": 0,
+        "received_bytes": 47779,
+        "received_messages": 48,
+        "replay_rejected": 16,
+        "retries": 5,
+        "sent_bytes": 89238,
+        "sent_messages": 66
+      },
+      "node_id": "w4",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "closures_issued": 5,
+        "conflicts": 0,
+        "dropped_messages": 12,
+        "errors": 0,
+        "rate_limited": 0,
+        "received_bytes": 42542,
+        "received_messages": 46,
+        "replay_rejected": 18,
+        "retries": 12,
+        "sent_bytes": 85980,
+        "sent_messages": 60
+      },
+      "node_id": "w5",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "closures_issued": 5,
+        "conflicts": 0,
+        "dropped_messages": 7,
+        "errors": 0,
+        "rate_limited": 0,
+        "received_bytes": 45161,
+        "received_messages": 47,
+        "replay_rejected": 17,
+        "retries": 7,
+        "sent_bytes": 85980,
+        "sent_messages": 60
+      },
+      "node_id": "w6",
+      "ok": true
+    }
+  ],
+  "status_events": [],
+  "scope": "independent localhost TCP processes; leaderless receipt gossip; Ed25519 receipts and closure"
+}

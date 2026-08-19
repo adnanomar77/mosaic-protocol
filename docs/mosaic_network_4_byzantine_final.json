@@ -1,0 +1,89 @@
+{
+  "nodes": 4,
+  "operations_requested": 5,
+  "operations_successful": 5,
+  "delay_ms": 0.0,
+  "drop_rate": 0.0,
+  "byzantine_id": "w1",
+  "p50_ms": 20.161349,
+  "p95_ms": 20.328837,
+  "durations_ms": [
+    20.328837,
+    20.161349,
+    19.463596,
+    19.839256,
+    21.226905
+  ],
+  "node_metrics": [
+    {
+      "metrics": {
+        "closures_issued": 5,
+        "conflicts": 5,
+        "dropped_messages": 0,
+        "errors": 0,
+        "rate_limited": 0,
+        "received_bytes": 25761,
+        "received_messages": 34,
+        "replay_rejected": 7,
+        "retries": 0,
+        "sent_bytes": 36288,
+        "sent_messages": 36
+      },
+      "node_id": "w0",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "closures_issued": 5,
+        "conflicts": 5,
+        "dropped_messages": 0,
+        "errors": 0,
+        "rate_limited": 0,
+        "received_bytes": 21957,
+        "received_messages": 28,
+        "replay_rejected": 8,
+        "retries": 0,
+        "sent_bytes": 40059,
+        "sent_messages": 48
+      },
+      "node_id": "w1",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "closures_issued": 5,
+        "conflicts": 5,
+        "dropped_messages": 0,
+        "errors": 0,
+        "rate_limited": 0,
+        "received_bytes": 25762,
+        "received_messages": 34,
+        "replay_rejected": 7,
+        "retries": 0,
+        "sent_bytes": 34659,
+        "sent_messages": 33
+      },
+      "node_id": "w2",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "closures_issued": 5,
+        "conflicts": 5,
+        "dropped_messages": 0,
+        "errors": 0,
+        "rate_limited": 0,
+        "received_bytes": 27687,
+        "received_messages": 35,
+        "replay_rejected": 6,
+        "retries": 0,
+        "sent_bytes": 34659,
+        "sent_messages": 33
+      },
+      "node_id": "w3",
+      "ok": true
+    }
+  ],
+  "status_events": [],
+  "scope": "independent localhost TCP processes; leaderless receipt gossip; Ed25519 receipts and closure"
+}

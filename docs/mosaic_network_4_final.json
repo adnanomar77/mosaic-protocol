@@ -1,0 +1,80 @@
+{
+  "nodes": 4,
+  "operations_requested": 10,
+  "operations_successful": 10,
+  "delay_ms": 0.0,
+  "drop_rate": 0.0,
+  "p50_ms": 5.547593,
+  "p95_ms": 5.67623,
+  "durations_ms": [
+    9.991459,
+    5.510802,
+    5.547593,
+    5.67623,
+    5.643721,
+    5.402368,
+    5.511668,
+    5.463602,
+    5.440442,
+    5.557029
+  ],
+  "node_metrics": [
+    {
+      "metrics": {
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "errors": 0,
+        "received_bytes": 20474,
+        "received_messages": 71,
+        "retries": 0,
+        "sent_bytes": 72606,
+        "sent_messages": 60
+      },
+      "node_id": "w0",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "errors": 0,
+        "received_bytes": 25325,
+        "received_messages": 21,
+        "retries": 0,
+        "sent_bytes": 4720,
+        "sent_messages": 20
+      },
+      "node_id": "w1",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "errors": 0,
+        "received_bytes": 25325,
+        "received_messages": 21,
+        "retries": 0,
+        "sent_bytes": 4720,
+        "sent_messages": 20
+      },
+      "node_id": "w2",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "errors": 0,
+        "received_bytes": 25325,
+        "received_messages": 21,
+        "retries": 0,
+        "sent_bytes": 4720,
+        "sent_messages": 20
+      },
+      "node_id": "w3",
+      "ok": true
+    }
+  ],
+  "scope": "independent localhost TCP processes; no global order; Ed25519 receipts and closure"
+}

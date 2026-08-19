@@ -1,0 +1,26 @@
+flowchart TD
+    C[Client signs operation<br/>inputs + expected versions] --> G[Gossip / Event DAG]
+    G --> A[Availability proof DAC]
+    A --> X{Conflict scope}
+    X -->|single domain| D[Domain executor]
+    X -->|multiple domains| M[Parallel domain executors]
+    D --> V[Domain BFT votes]
+    M --> V1[Prepare certificate per domain]
+    V1 --> J[Joiner verifies all certificates]
+    V --> L[Local commit certificate]
+    J --> K[Join certificate]
+    L --> S[State root / snapshot / pruning]
+    K --> S
+    S --> Q[Light client verifies certificate + state proof]
+    V --> E[Evidence of equivocation]
+    V1 --> E
+    E --> R[Recovery / governance / optional slashing]
+    T[New epoch committee] --> R
+    R --> G
+
+    classDef core fill:#0f766e,color:#fff,stroke:#134e4a,stroke-width:2px;
+    classDef cert fill:#1d4ed8,color:#fff,stroke:#1e3a8a,stroke-width:2px;
+    classDef state fill:#7c3aed,color:#fff,stroke:#4c1d95,stroke-width:2px;
+    class C,G,A,X,D,M,V,V1,J,L,K core;
+    class S,Q state;
+    class E,R,T cert;

@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local databases, WAL, snapshots, and runtime logs
+*.sqlite
+*.sqlite3
+*.db
+*.db-wal
+*.db-shm
+*.wal
+*.log
+/tmp/
+
+# Private credentials and host material
+*.key
+*.pem
+*.p12
+*.pfx
+id_ed25519
+id_rsa
+secrets*.json
+private*
+
+# Generated TeX build files
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+
+# External baseline environments and large local dependencies
+external_baselines/
+
+# OS/editor files
+.DS_Store
+.vscode/
+.idea/

@@ -1,0 +1,55 @@
+{
+  "node_id": "w0",
+  "bind_host": "0.0.0.0",
+  "bind_port": 20300,
+  "data_path": "/var/lib/mosaic/w0.sqlite",
+  "epoch": 0,
+  "members": {
+    "w0": {
+      "public_key_b64": "REPLACE_WITH_W0_PUBLIC_KEY",
+      "private_key_b64": "REPLACE_WITH_W0_PRIVATE_KEY_ONLY_ON_W0",
+      "weight": 1
+    },
+    "w1": {
+      "public_key_b64": "REPLACE_WITH_W1_PUBLIC_KEY",
+      "weight": 1
+    },
+    "w2": {
+      "public_key_b64": "REPLACE_WITH_W2_PUBLIC_KEY",
+      "weight": 1
+    },
+    "w3": {
+      "public_key_b64": "REPLACE_WITH_W3_PUBLIC_KEY",
+      "weight": 1
+    }
+  },
+  "peers": {
+    "w1": {
+      "host": "validator-w1.example.net",
+      "port": 20301
+    },
+    "w2": {
+      "host": "validator-w2.example.net",
+      "port": 20302
+    },
+    "w3": {
+      "host": "validator-w3.example.net",
+      "port": 20303
+    }
+  },
+  "initial_seals": [
+    {
+      "resource_id": "asset",
+      "epoch": 0,
+      "version": 0,
+      "state_root": "genesis",
+      "capability_hash": "REPLACE_WITH_SHA256_CANONICAL_CAPABILITY_DIGEST",
+      "owner": "GENESIS_OWNER_IDENTITY"
+    }
+  ],
+  "tls": {
+    "certfile": "/etc/mosaic/tls/w0.crt",
+    "keyfile": "/etc/mosaic/tls/w0.key",
+    "cafile": "/etc/mosaic/tls/ca.crt"
+  }
+}

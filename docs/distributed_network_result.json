@@ -1,0 +1,76 @@
+{
+  "node_count": 4,
+  "operations": 5,
+  "delay_ms_per_message": 1.0,
+  "drop_rate": 0.1,
+  "byzantine_id": null,
+  "successful_operations": 5,
+  "p50_finality_ms": 19.522826,
+  "p95_finality_ms": 21.476414,
+  "durations_ms": [
+    22.035416,
+    18.617782,
+    19.522826,
+    19.146472,
+    21.476414
+  ],
+  "node_metrics": [
+    {
+      "metrics": {
+        "dropped_messages": 7,
+        "equivocations": 0,
+        "errors": 0,
+        "received_bytes": 16977,
+        "received_messages": 51,
+        "retries": 7,
+        "sent_bytes": 62730,
+        "sent_messages": 45
+      },
+      "node_id": "validator-0",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "dropped_messages": 2,
+        "equivocations": 0,
+        "errors": 0,
+        "received_bytes": 20932,
+        "received_messages": 16,
+        "retries": 2,
+        "sent_bytes": 4645,
+        "sent_messages": 15
+      },
+      "node_id": "validator-1",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "dropped_messages": 4,
+        "equivocations": 0,
+        "errors": 0,
+        "received_bytes": 20932,
+        "received_messages": 16,
+        "retries": 4,
+        "sent_bytes": 4645,
+        "sent_messages": 15
+      },
+      "node_id": "validator-2",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "dropped_messages": 0,
+        "equivocations": 0,
+        "errors": 0,
+        "received_bytes": 20932,
+        "received_messages": 16,
+        "retries": 0,
+        "sent_bytes": 4645,
+        "sent_messages": 15
+      },
+      "node_id": "validator-3",
+      "ok": true
+    }
+  ],
+  "scope": "real localhost TCP processes; injected Byzantine node and transport faults are local test conditions only"
+}

@@ -1,0 +1,30 @@
+{
+  "protocol": "MOSAIC/BINARY-COMPARISON/v1",
+  "mosaic": {
+    "implementation": "local source",
+    "nodes": 7,
+    "operations": 30,
+    "operations_successful": 30,
+    "p50_ms": 35.171657,
+    "p95_ms": 45.875422,
+    "features": ["SQLite WAL", "Ed25519", "replay guard", "rate limits", "two Byzantine nodes", "kill/restart", "partial-frame DoS"],
+    "comparability": "internal baseline; different semantics from HotStuff demo"
+  },
+  "hotstuff": {
+    "implementation": "official libhotstuff demo binary",
+    "replicas": 4,
+    "final_decisions": 10710,
+    "elapsed_s": 9.988412,
+    "observed_decisions_per_second": 1072.242,
+    "features": ["official demo client", "final decision logs"],
+    "comparability": "binary evidence; no WAL/security parity and different workload"
+  },
+  "narwhal_tusk": {
+    "implementation": "official repository",
+    "build": "failed",
+    "failure": "librocksdb-sys v0.8.0+7.4.4 bindgen/proc-macro2 panic on archived RocksDB headers",
+    "observed_performance": null,
+    "comparability": "not measured"
+  },
+  "conclusion": "No cross-system superiority claim is supported until a same-hardware, same-workload, same-fault-model binary harness is completed."
+}

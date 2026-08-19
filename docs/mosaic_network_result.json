@@ -1,0 +1,363 @@
+{
+  "nodes": 10,
+  "operations_requested": 20,
+  "operations_successful": 20,
+  "delay_ms": 0.0,
+  "drop_rate": 0.0,
+  "byzantine_id": null,
+  "byzantine_ids": [],
+  "p50_ms": 61.758052,
+  "p95_ms": 72.236053,
+  "durations_ms": [
+    37.017535,
+    68.678372,
+    71.60597,
+    65.555025,
+    75.909805,
+    72.236053,
+    55.262083,
+    60.512501,
+    57.459643,
+    58.149715,
+    50.230035,
+    64.029851,
+    61.710357,
+    63.14825,
+    52.462396,
+    64.102613,
+    58.241687,
+    61.758052,
+    68.074318,
+    50.747559
+  ],
+  "node_metrics": [
+    {
+      "metrics": {
+        "closures_issued": 20,
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "errors": 3,
+        "rate_limited": 0,
+        "received_bytes": 321165,
+        "received_messages": 274,
+        "replay_rejected": 107,
+        "retries": 0,
+        "sent_bytes": 646191,
+        "sent_messages": 378
+      },
+      "node_id": "w0",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "closures_issued": 20,
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "errors": 4,
+        "rate_limited": 0,
+        "received_bytes": 317861,
+        "received_messages": 273,
+        "replay_rejected": 108,
+        "retries": 0,
+        "sent_bytes": 646191,
+        "sent_messages": 378
+      },
+      "node_id": "w1",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "closures_issued": 20,
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "errors": 3,
+        "rate_limited": 0,
+        "received_bytes": 331144,
+        "received_messages": 277,
+        "replay_rejected": 104,
+        "retries": 0,
+        "sent_bytes": 646191,
+        "sent_messages": 378
+      },
+      "node_id": "w2",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "closures_issued": 20,
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "errors": 3,
+        "rate_limited": 0,
+        "received_bytes": 324507,
+        "received_messages": 275,
+        "replay_rejected": 106,
+        "retries": 0,
+        "sent_bytes": 646191,
+        "sent_messages": 378
+      },
+      "node_id": "w3",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "closures_issued": 20,
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "errors": 4,
+        "rate_limited": 0,
+        "received_bytes": 324498,
+        "received_messages": 275,
+        "replay_rejected": 106,
+        "retries": 0,
+        "sent_bytes": 646191,
+        "sent_messages": 378
+      },
+      "node_id": "w4",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "closures_issued": 20,
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "errors": 4,
+        "rate_limited": 0,
+        "received_bytes": 314549,
+        "received_messages": 272,
+        "replay_rejected": 109,
+        "retries": 0,
+        "sent_bytes": 646191,
+        "sent_messages": 378
+      },
+      "node_id": "w5",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "closures_issued": 20,
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "errors": 1,
+        "rate_limited": 0,
+        "received_bytes": 301286,
+        "received_messages": 268,
+        "replay_rejected": 113,
+        "retries": 0,
+        "sent_bytes": 646191,
+        "sent_messages": 378
+      },
+      "node_id": "w6",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "closures_issued": 20,
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "errors": 3,
+        "rate_limited": 0,
+        "received_bytes": 317872,
+        "received_messages": 273,
+        "replay_rejected": 108,
+        "retries": 0,
+        "sent_bytes": 646191,
+        "sent_messages": 378
+      },
+      "node_id": "w7",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "closures_issued": 20,
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "errors": 3,
+        "rate_limited": 0,
+        "received_bytes": 307923,
+        "received_messages": 270,
+        "replay_rejected": 111,
+        "retries": 0,
+        "sent_bytes": 646191,
+        "sent_messages": 378
+      },
+      "node_id": "w8",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "closures_issued": 20,
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "errors": 3,
+        "rate_limited": 0,
+        "received_bytes": 304600,
+        "received_messages": 269,
+        "replay_rejected": 112,
+        "retries": 0,
+        "sent_bytes": 646200,
+        "sent_messages": 378
+      },
+      "node_id": "w9",
+      "ok": true
+    }
+  ],
+  "status_events": [
+    {
+      "event": "closure_error",
+      "node_id": "w8",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w5",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w1",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w4",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w1",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w2",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w5",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w0",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w7",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w4",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w9",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w8",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w3",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w0",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w4",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w1",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w7",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w2",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w9",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w8",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w3",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w5",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w3",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w7",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w4",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w5",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w9",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w6",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w2",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w1",
+      "error": "predecessor is not current"
+    },
+    {
+      "event": "closure_error",
+      "node_id": "w0",
+      "error": "predecessor is not current"
+    }
+  ],
+  "scope": "independent localhost TCP processes; leaderless receipt gossip; Ed25519 receipts and closure"
+}

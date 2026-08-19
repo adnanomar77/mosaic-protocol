@@ -1,0 +1,282 @@
+{
+  "scope": "LOCAL_EMULATION; independent daemon processes on one host, not public testnet",
+  "nodes": 5,
+  "put_responses": [
+    {
+      "node_id": "w0",
+      "object_id": "network-object-0",
+      "ok": true,
+      "shard_index": 0
+    },
+    {
+      "node_id": "w1",
+      "object_id": "network-object-0",
+      "ok": true,
+      "shard_index": 1
+    },
+    {
+      "node_id": "w2",
+      "object_id": "network-object-0",
+      "ok": true,
+      "shard_index": 2
+    },
+    {
+      "node_id": "w3",
+      "object_id": "network-object-0",
+      "ok": true,
+      "shard_index": 3
+    },
+    {
+      "node_id": "w4",
+      "object_id": "network-object-0",
+      "ok": true,
+      "shard_index": 4
+    }
+  ],
+  "source_fetches": [
+    {
+      "node_id": "w0",
+      "ok": true,
+      "shard": {
+        "content_digest": "0a6d1d14c97a0c5fea432a6f75f1e9a9f2e270b274a5ee1c8430958dca73e627",
+        "data_shards": 3,
+        "object_id": "network-object-0",
+        "payload": "00000000000003a2617661696c6162696c6974792d6f7665722d70726f76696465722d746370617661696c6162696c6974792d6f7665722d70726f76696465722d746370617661696c6162696c6974792d6f7665722d70726f76696465722d746370617661696c6162696c6974792d6f7665722d70726f76696465722d746370617661696c6162696c6974792d6f7665722d70726f76696465722d746370617661696c6162696c6974792d6f7665722d70726f76696465722d746370617661696c6162696c6974792d6f7665722d70726f76696465722d746370617661696c6162696c6974792d6f7665722d70726f76696465722d746370617661696c6162696c6974792d6f7665722d70726f76696465722d746370617661696c6162696c6974792d6f7665722d70726f76696465722d746370617661696c",
+        "shard_digest": "ddb107d3e140c712bdeaacfdb33219e952242e027e8318e4505fccd91b42ff09",
+        "shard_index": 0,
+        "total_shards": 5
+      }
+    },
+    {
+      "node_id": "w1",
+      "ok": true,
+      "shard": {
+        "content_digest": "0a6d1d14c97a0c5fea432a6f75f1e9a9f2e270b274a5ee1c8430958dca73e627",
+        "data_shards": 3,
+        "object_id": "network-object-0",
+        "payload": "6162696c6974792d6f7665722d70726f76696465722d746370617661696c6162696c6974792d6f7665722d70726f76696465722d746370617661696c6162696c6974792d6f7665722d70726f76696465722d746370617661696c6162696c6974792d6f7665722d70726f76696465722d746370617661696c6162696c6974792d6f7665722d70726f76696465722d746370617661696c6162696c6974792d6f7665722d70726f76696465722d746370617661696c6162696c6974792d6f7665722d70726f76696465722d746370617661696c6162696c6974792d6f7665722d70726f76696465722d746370617661696c6162696c6974792d6f7665722d70726f76696465722d746370617661696c6162696c6974792d6f7665722d70726f76696465722d746370617661696c6162696c6974792d6f7665722d",
+        "shard_digest": "874ff4e6e0fd19bbbb00b74373fe2dce447b5c5161476499487de968c0fef0f6",
+        "shard_index": 1,
+        "total_shards": 5
+      }
+    },
+    {
+      "node_id": "w2",
+      "ok": true,
+      "shard": {
+        "content_digest": "0a6d1d14c97a0c5fea432a6f75f1e9a9f2e270b274a5ee1c8430958dca73e627",
+        "data_shards": 3,
+        "object_id": "network-object-0",
+        "payload": "70726f76696465722d746370617661696c6162696c6974792d6f7665722d70726f76696465722d746370617661696c6162696c6974792d6f7665722d70726f76696465722d746370617661696c6162696c6974792d6f7665722d70726f76696465722d746370617661696c6162696c6974792d6f7665722d70726f76696465722d746370617661696c6162696c6974792d6f7665722d70726f76696465722d746370617661696c6162696c6974792d6f7665722d70726f76696465722d746370617661696c6162696c6974792d6f7665722d70726f76696465722d746370617661696c6162696c6974792d6f7665722d70726f76696465722d746370617661696c6162696c6974792d6f7665722d70726f76696465722d746370617661696c6162696c6974792d6f7665722d70726f76696465722d74637000",
+        "shard_digest": "ff5c9135bf4587c676ccf20e778f7fbdcf86c9c5841fececcafc7284329fbfe5",
+        "shard_index": 2,
+        "total_shards": 5
+      }
+    }
+  ],
+  "repair_response": {
+    "node_id": "w4",
+    "ok": true,
+    "repaired": [
+      {
+        "content_digest": "0a6d1d14c97a0c5fea432a6f75f1e9a9f2e270b274a5ee1c8430958dca73e627",
+        "data_shards": 3,
+        "object_id": "network-object-0",
+        "payload": "cae6079e67c3e4652aa096ef868fe916278e972e7605a837450a86f5a531a38262ec4ab784b72aa096ef868fe916278e972e7605a837450a86f5a531a38262ec4ab784b72aa096ef868fe916278e972e7605a837450a86f5a531a38262ec4ab784b72aa096ef868fe916278e972e7605a837450a86f5a531a38262ec4ab784b72aa096ef868fe916278e972e7605a837450a86f5a531a38262ec4ab784b72aa096ef868fe916278e972e7605a837450a86f5a531a38262ec4ab784b72aa096ef868fe916278e972e7605a837450a86f5a531a38262ec4ab784b72aa096ef868fe916278e972e7605a837450a86f5a531a38262ec4ab784b72aa096ef868fe916278e972e7605a837450a86f5a531a38262ec4ab784b72aa096ef868fe916278e972e7605a837450a86f5a531a38262ec4ab784b72aa096efd8",
+        "shard_digest": "1c333ea9989f4a285480e79da1220aa84c7c478513233825f919e20f7118b280",
+        "shard_index": 3,
+        "total_shards": 5
+      },
+      {
+        "content_digest": "0a6d1d14c97a0c5fea432a6f75f1e9a9f2e270b274a5ee1c8430958dca73e627",
+        "data_shards": 3,
+        "object_id": "network-object-0",
+        "payload": "dbf6018467d3f83a68a290edca89fa103d8691226841a82d180486f1be70b29264f64aa798e868a290edca89fa103d8691226841a82d180486f1be70b29264f64aa798e868a290edca89fa103d8691226841a82d180486f1be70b29264f64aa798e868a290edca89fa103d8691226841a82d180486f1be70b29264f64aa798e868a290edca89fa103d8691226841a82d180486f1be70b29264f64aa798e868a290edca89fa103d8691226841a82d180486f1be70b29264f64aa798e868a290edca89fa103d8691226841a82d180486f1be70b29264f64aa798e868a290edca89fa103d8691226841a82d180486f1be70b29264f64aa798e868a290edca89fa103d8691226841a82d180486f1be70b29264f64aa798e868a290edca89fa103d8691226841a82d180486f1be70b29264f64aa798e868a290edf5",
+        "shard_digest": "e15a222cca37f37e5403cfcd7a21ca338d1d499fe7486892a0fe804def46beef",
+        "shard_index": 4,
+        "total_shards": 5
+      }
+    ]
+  },
+  "sample_response": {
+    "node_id": "w4",
+    "ok": true,
+    "proof": {
+      "content_digest": "0a6d1d14c97a0c5fea432a6f75f1e9a9f2e270b274a5ee1c8430958dca73e627",
+      "object_id": "network-object-0",
+      "proof_id": "fc0db2d4c1703b430bd96bcc49211e91b183a00818a6684b6c7f53dae5f251e1",
+      "sampled_indices": [
+        3,
+        4
+      ],
+      "shard_digests": [
+        "1c333ea9989f4a285480e79da1220aa84c7c478513233825f919e20f7118b280",
+        "e15a222cca37f37e5403cfcd7a21ca338d1d499fe7486892a0fe804def46beef"
+      ]
+    }
+  },
+  "recovered_payload_matches": true,
+  "restart_fetch_ok": true,
+  "metrics": [
+    {
+      "metrics": {
+        "admissions": 0,
+        "availability_fetches": 1,
+        "availability_puts": 1,
+        "availability_repairs": 0,
+        "availability_samples": 0,
+        "beacon_commits": 0,
+        "beacon_finalizations": 0,
+        "beacon_reveals": 0,
+        "closures_issued": 0,
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "error_details": {},
+        "error_types": {},
+        "errors": 0,
+        "frame_timeouts": 0,
+        "malformed_frames": 0,
+        "onboarding_restored": 0,
+        "protocol_rejections": 0,
+        "rate_limited": 0,
+        "received_bytes": 1050,
+        "received_messages": 3,
+        "replay_rejected": 0,
+        "retries": 0,
+        "sent_bytes": 0,
+        "sent_messages": 0,
+        "transport_failures": 0
+      },
+      "node_id": "w0",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "admissions": 0,
+        "availability_fetches": 1,
+        "availability_puts": 1,
+        "availability_repairs": 0,
+        "availability_samples": 0,
+        "beacon_commits": 0,
+        "beacon_finalizations": 0,
+        "beacon_reveals": 0,
+        "closures_issued": 0,
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "error_details": {},
+        "error_types": {},
+        "errors": 0,
+        "frame_timeouts": 0,
+        "malformed_frames": 0,
+        "onboarding_restored": 0,
+        "protocol_rejections": 0,
+        "rate_limited": 0,
+        "received_bytes": 1050,
+        "received_messages": 3,
+        "replay_rejected": 0,
+        "retries": 0,
+        "sent_bytes": 0,
+        "sent_messages": 0,
+        "transport_failures": 0
+      },
+      "node_id": "w1",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "admissions": 0,
+        "availability_fetches": 1,
+        "availability_puts": 1,
+        "availability_repairs": 0,
+        "availability_samples": 0,
+        "beacon_commits": 0,
+        "beacon_finalizations": 0,
+        "beacon_reveals": 0,
+        "closures_issued": 0,
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "error_details": {},
+        "error_types": {},
+        "errors": 0,
+        "frame_timeouts": 0,
+        "malformed_frames": 0,
+        "onboarding_restored": 0,
+        "protocol_rejections": 0,
+        "rate_limited": 0,
+        "received_bytes": 1050,
+        "received_messages": 3,
+        "replay_rejected": 0,
+        "retries": 0,
+        "sent_bytes": 0,
+        "sent_messages": 0,
+        "transport_failures": 0
+      },
+      "node_id": "w2",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "admissions": 0,
+        "availability_fetches": 0,
+        "availability_puts": 1,
+        "availability_repairs": 0,
+        "availability_samples": 0,
+        "beacon_commits": 0,
+        "beacon_finalizations": 0,
+        "beacon_reveals": 0,
+        "closures_issued": 0,
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "error_details": {},
+        "error_types": {},
+        "errors": 0,
+        "frame_timeouts": 0,
+        "malformed_frames": 0,
+        "onboarding_restored": 0,
+        "protocol_rejections": 0,
+        "rate_limited": 0,
+        "received_bytes": 965,
+        "received_messages": 2,
+        "replay_rejected": 0,
+        "retries": 0,
+        "sent_bytes": 0,
+        "sent_messages": 0,
+        "transport_failures": 0
+      },
+      "node_id": "w3",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "admissions": 0,
+        "availability_fetches": 0,
+        "availability_puts": 1,
+        "availability_repairs": 1,
+        "availability_samples": 1,
+        "beacon_commits": 0,
+        "beacon_finalizations": 0,
+        "beacon_reveals": 0,
+        "closures_issued": 0,
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "error_details": {},
+        "error_types": {},
+        "errors": 0,
+        "frame_timeouts": 0,
+        "malformed_frames": 0,
+        "onboarding_restored": 0,
+        "protocol_rejections": 0,
+        "rate_limited": 0,
+        "received_bytes": 3836,
+        "received_messages": 4,
+        "replay_rejected": 0,
+        "retries": 0,
+        "sent_bytes": 0,
+        "sent_messages": 0,
+        "transport_failures": 0
+      },
+      "node_id": "w4",
+      "ok": true
+    }
+  ]
+}

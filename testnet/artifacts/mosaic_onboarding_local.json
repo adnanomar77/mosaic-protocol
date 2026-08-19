@@ -1,0 +1,147 @@
+{
+  "scope": "LOCAL_EMULATION; independent daemon processes on one host, not public testnet",
+  "nodes": 4,
+  "admission_response": {
+    "certificate": {
+      "approver_ids": [],
+      "certificate_id": "bda08f224b688d62c59103e9c880552ff93dc6d4f581b49e4a93e5067fd81e5e",
+      "epoch": 0,
+      "request_digest": "5d6d465a52541353242bc6a3d3cb419c522e6ece47ff34a76b595d76871f43e9",
+      "signatures": []
+    },
+    "node_id": "w0",
+    "ok": true,
+    "onboarding_root": "722fdd9af6001ed727bf424dd30b45a0ae6f6139a0b0b0aa4b6b38917ca4893e"
+  },
+  "metrics": [
+    {
+      "metrics": {
+        "admissions": 1,
+        "closures_issued": 0,
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "error_details": {},
+        "error_types": {},
+        "errors": 0,
+        "frame_timeouts": 0,
+        "malformed_frames": 0,
+        "onboarding_restored": 0,
+        "protocol_rejections": 0,
+        "rate_limited": 0,
+        "received_bytes": 735,
+        "received_messages": 2,
+        "replay_rejected": 0,
+        "retries": 0,
+        "sent_bytes": 2079,
+        "sent_messages": 3,
+        "transport_failures": 0
+      },
+      "node_id": "w0",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "admissions": 1,
+        "closures_issued": 0,
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "error_details": {},
+        "error_types": {},
+        "errors": 0,
+        "frame_timeouts": 0,
+        "malformed_frames": 0,
+        "onboarding_restored": 0,
+        "protocol_rejections": 0,
+        "rate_limited": 0,
+        "received_bytes": 751,
+        "received_messages": 2,
+        "replay_rejected": 0,
+        "retries": 0,
+        "sent_bytes": 0,
+        "sent_messages": 0,
+        "transport_failures": 0
+      },
+      "node_id": "w1",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "admissions": 1,
+        "closures_issued": 0,
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "error_details": {},
+        "error_types": {},
+        "errors": 0,
+        "frame_timeouts": 0,
+        "malformed_frames": 0,
+        "onboarding_restored": 0,
+        "protocol_rejections": 0,
+        "rate_limited": 0,
+        "received_bytes": 751,
+        "received_messages": 2,
+        "replay_rejected": 0,
+        "retries": 0,
+        "sent_bytes": 0,
+        "sent_messages": 0,
+        "transport_failures": 0
+      },
+      "node_id": "w2",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "admissions": 1,
+        "closures_issued": 0,
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "error_details": {},
+        "error_types": {},
+        "errors": 0,
+        "frame_timeouts": 0,
+        "malformed_frames": 0,
+        "onboarding_restored": 0,
+        "protocol_rejections": 0,
+        "rate_limited": 0,
+        "received_bytes": 751,
+        "received_messages": 2,
+        "replay_rejected": 0,
+        "retries": 0,
+        "sent_bytes": 0,
+        "sent_messages": 0,
+        "transport_failures": 0
+      },
+      "node_id": "w3",
+      "ok": true
+    }
+  ],
+  "gossip_admissions": 4,
+  "restart_metrics": {
+    "metrics": {
+      "admissions": 0,
+      "closures_issued": 0,
+      "conflicts": 0,
+      "dropped_messages": 0,
+      "error_details": {},
+      "error_types": {},
+      "errors": 0,
+      "frame_timeouts": 0,
+      "malformed_frames": 0,
+      "onboarding_restored": 1,
+      "protocol_rejections": 0,
+      "rate_limited": 0,
+      "received_bytes": 23,
+      "received_messages": 1,
+      "replay_rejected": 0,
+      "retries": 0,
+      "sent_bytes": 0,
+      "sent_messages": 0,
+      "transport_failures": 0
+    },
+    "node_id": "w0",
+    "ok": true
+  },
+  "restart_onboarding_wal_check": true,
+  "applicant_identity": "ce255710d219bdc2fc34ffabff63f888",
+  "private_keys_written_to": "local ephemeral rehearsal only; production deployment must provision keys out-of-band"
+}

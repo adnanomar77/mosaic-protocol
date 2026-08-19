@@ -1,0 +1,211 @@
+{
+  "scope": "LOCAL_EMULATION; independent daemon processes on one host, not public testnet",
+  "nodes": 4,
+  "commit_responses": [
+    {
+      "commitment": {
+        "commitment": "15065fe346b447704832fd93f283abbb0d7f272486ad07bdf002e1b7396b46c2",
+        "epoch": 0,
+        "round": 0,
+        "signature": "3144e42416e917c120c552f316bebe68bef0538e4ae38faaaf8013f102c6809e9a6762c8ddb7bf9ce527a6897fb5ac9b55dfdb28e1c929e568689777f85c7d01",
+        "validator_id": "w0"
+      },
+      "node_id": "w0",
+      "ok": true
+    },
+    {
+      "commitment": {
+        "commitment": "eb72fc470404f45852a53f90419cecbc371c6d7764769f8e0fa695ccf60dea2c",
+        "epoch": 0,
+        "round": 0,
+        "signature": "24748605a2684e2d8889a661cda4d527e5b4b7987b87e50289c0aeb6864a45299a26e40645cf68969028602b882b141af516d783b892adf5edffe4deb2e1cd0a",
+        "validator_id": "w1"
+      },
+      "node_id": "w0",
+      "ok": true
+    },
+    {
+      "commitment": {
+        "commitment": "6c3131cc269fc9ccf6e8a357dd92c343f45411f33f6ed56bbf70815aea9345a4",
+        "epoch": 0,
+        "round": 0,
+        "signature": "18a8f98a392404a050282a9035a6f176dfae6721b4d06eae15c363f5631af40076a91dfa4f39a4016ef6a6e73ff8744b208de575970c64aa72d62849f0dec30f",
+        "validator_id": "w2"
+      },
+      "node_id": "w0",
+      "ok": true
+    },
+    {
+      "commitment": {
+        "commitment": "652fe91f8dff43c079f46abd8367e9be3fcb5325068c6c8db1a3a2b68d13dbb9",
+        "epoch": 0,
+        "round": 0,
+        "signature": "497a421d9bd6e265b95c2aeb60560209e3413319946eeb5f519d86bb696fdf14882dd1ca20b0740509f47b7d4f693400d1cc633a6d70927b160b4d7c06564c08",
+        "validator_id": "w3"
+      },
+      "node_id": "w0",
+      "ok": true
+    }
+  ],
+  "reveal_responses": [
+    {
+      "node_id": "w0",
+      "ok": true,
+      "reveal": {
+        "commitment": "15065fe346b447704832fd93f283abbb0d7f272486ad07bdf002e1b7396b46c2",
+        "epoch": 0,
+        "round": 0,
+        "secret": "626561636f6e2d6e6574776f726b2d7365637265742d30",
+        "signature": "041c4b8e4f28d4e17409cf884ad9cb27f4f2699e6484d073986324072201929b248b059d415f2dd6822940b36aecfc488696c10ddb6fd3be28158b8461514b08",
+        "validator_id": "w0"
+      }
+    },
+    {
+      "node_id": "w0",
+      "ok": true,
+      "reveal": {
+        "commitment": "eb72fc470404f45852a53f90419cecbc371c6d7764769f8e0fa695ccf60dea2c",
+        "epoch": 0,
+        "round": 0,
+        "secret": "626561636f6e2d6e6574776f726b2d7365637265742d31",
+        "signature": "dc036ced9f368a48293b9e032bf1a441b27aa4776aa209d39c1817e77bd3b49dba8898e45656a81ac576617e42d791631433faf24be6ad78c87e3d40c6c9ac0f",
+        "validator_id": "w1"
+      }
+    },
+    {
+      "node_id": "w0",
+      "ok": true,
+      "reveal": {
+        "commitment": "6c3131cc269fc9ccf6e8a357dd92c343f45411f33f6ed56bbf70815aea9345a4",
+        "epoch": 0,
+        "round": 0,
+        "secret": "626561636f6e2d6e6574776f726b2d7365637265742d32",
+        "signature": "f834587eb9b831fd6c00fadb4dfa29d9b2e9879782ff372900632bbbbdbfefff5b3c3025db7ecab15cf78b58fac566d476b1213127e65ebf85bb05770e8db101",
+        "validator_id": "w2"
+      }
+    }
+  ],
+  "finalize_response": {
+    "beacon_mode": "reveal",
+    "beacon_proof_id": "d7ae5f168308f5ca7227feed5f51ac0b5d8475f32c660f9c43d6a97d93c922f7",
+    "membership_root": "07ad35b796ba7e6289ff4d1d9d746bb316f4601735199d4d34b6f29dd4113f4f",
+    "node_id": "w0",
+    "ok": true,
+    "round": 0,
+    "settlement_root": "938308f770185780278e0c7505220d2b30e46ab4ca5ab398191d0ad0db7162d8"
+  },
+  "metrics": [
+    {
+      "metrics": {
+        "admissions": 0,
+        "beacon_commits": 8,
+        "beacon_finalizations": 1,
+        "beacon_reveals": 6,
+        "closures_issued": 0,
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "error_details": {},
+        "error_types": {},
+        "errors": 0,
+        "frame_timeouts": 0,
+        "malformed_frames": 0,
+        "onboarding_restored": 0,
+        "protocol_rejections": 0,
+        "rate_limited": 0,
+        "received_bytes": 2505,
+        "received_messages": 9,
+        "replay_rejected": 0,
+        "retries": 0,
+        "sent_bytes": 7206,
+        "sent_messages": 21,
+        "transport_failures": 0
+      },
+      "node_id": "w0",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "admissions": 0,
+        "beacon_commits": 4,
+        "beacon_finalizations": 0,
+        "beacon_reveals": 3,
+        "closures_issued": 0,
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "error_details": {},
+        "error_types": {},
+        "errors": 0,
+        "frame_timeouts": 0,
+        "malformed_frames": 0,
+        "onboarding_restored": 0,
+        "protocol_rejections": 0,
+        "rate_limited": 0,
+        "received_bytes": 2529,
+        "received_messages": 8,
+        "replay_rejected": 0,
+        "retries": 0,
+        "sent_bytes": 0,
+        "sent_messages": 0,
+        "transport_failures": 0
+      },
+      "node_id": "w1",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "admissions": 0,
+        "beacon_commits": 4,
+        "beacon_finalizations": 0,
+        "beacon_reveals": 3,
+        "closures_issued": 0,
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "error_details": {},
+        "error_types": {},
+        "errors": 0,
+        "frame_timeouts": 0,
+        "malformed_frames": 0,
+        "onboarding_restored": 0,
+        "protocol_rejections": 0,
+        "rate_limited": 0,
+        "received_bytes": 2529,
+        "received_messages": 8,
+        "replay_rejected": 0,
+        "retries": 0,
+        "sent_bytes": 0,
+        "sent_messages": 0,
+        "transport_failures": 0
+      },
+      "node_id": "w2",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "admissions": 0,
+        "beacon_commits": 4,
+        "beacon_finalizations": 0,
+        "beacon_reveals": 3,
+        "closures_issued": 0,
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "error_details": {},
+        "error_types": {},
+        "errors": 0,
+        "frame_timeouts": 0,
+        "malformed_frames": 0,
+        "onboarding_restored": 0,
+        "protocol_rejections": 0,
+        "rate_limited": 0,
+        "received_bytes": 2529,
+        "received_messages": 8,
+        "replay_rejected": 0,
+        "retries": 0,
+        "sent_bytes": 0,
+        "sent_messages": 0,
+        "transport_failures": 0
+      },
+      "node_id": "w3",
+      "ok": true
+    }
+  ]
+}

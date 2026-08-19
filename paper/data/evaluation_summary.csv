@@ -1,0 +1,8 @@
+evidence,value,unit,scope
+pytest tests,87,tests,local repository
+wire fuzz,4000,cases,parser harness
+bounded model checks,8,checks,M1-M8
+long-run nodes,7,nodes,local emulation
+long-run operations,120,operations,local emulation
+long-run successes,120,operations,local emulation
+event-log events,8,events,hash-chain verified

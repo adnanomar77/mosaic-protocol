@@ -1,0 +1,29 @@
+[
+  {
+    "workload": "independent_capsules",
+    "operations": 50,
+    "throughput_ops_s": 314.5461,
+    "p50_ms": 3.1457,
+    "p95_ms": 3.3479,
+    "bytes_per_operation": 1649.8,
+    "scope": "single-process reference model; Ed25519 and witness receipts included; network excluded"
+  },
+  {
+    "workload": "sequential_same_resource",
+    "operations": 50,
+    "throughput_ops_s": 336.8428,
+    "p50_ms": 2.9185,
+    "p95_ms": 3.0323,
+    "bytes_per_operation": 1658.8,
+    "scope": "single-process reference model; Ed25519 and witness receipts included; network excluded"
+  },
+  {
+    "workload": "two_resource_bundle",
+    "operations": 50,
+    "throughput_ops_s": 140.0776,
+    "p50_ms": 7.0384,
+    "p95_ms": 7.2071,
+    "bytes_per_operation": 3321.2,
+    "scope": "single-process reference model; Ed25519 and witness receipts included; network excluded"
+  }
+]

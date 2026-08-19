@@ -1,0 +1,40 @@
+{
+  "scope": "bounded exhaustive small-state model check; cryptographic verification uses the reference implementation",
+  "results": [
+    {
+      "name": "M1_quorum_intersection_under_less_than_one_third_byzantine_weight",
+      "cases": 84,
+      "quorum_pairs_checked": 36703,
+      "passed": true
+    },
+    {
+      "name": "M2_apply_requires_verified_closure",
+      "passed": true
+    },
+    {
+      "name": "M3_local_non_equivocation_emits_conflict_evidence",
+      "passed": true
+    },
+    {
+      "name": "M4_abandon_and_closure_are_mutually_exclusive_locally",
+      "passed": true
+    },
+    {
+      "name": "M5_epoch_separation_rejects_old_receipt",
+      "passed": true
+    },
+    {
+      "name": "M6_bundle_apply_is_atomic_at_visibility_boundary",
+      "passed": true
+    },
+    {
+      "name": "M7_availability_certificate_requires_verified_quorum",
+      "passed": true
+    },
+    {
+      "name": "M8_execution_batch_is_atomic_and_deterministic",
+      "passed": true
+    }
+  ],
+  "passed": true
+}

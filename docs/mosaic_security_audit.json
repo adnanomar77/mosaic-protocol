@@ -1,0 +1,7 @@
+{
+  "files_scanned": 12,
+  "findings": [],
+  "critical_count": 0,
+  "passed": true,
+  "scope": "AST static audit; not a substitute for independent cryptographic or penetration testing"
+}

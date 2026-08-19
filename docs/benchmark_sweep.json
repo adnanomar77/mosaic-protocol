@@ -1,0 +1,113 @@
+{
+  "operations_per_workload": 20,
+  "rows": [
+    {
+      "validators": 4,
+      "workload": "single_domain_independent",
+      "operations": 20,
+      "elapsed_ms": 116.8687,
+      "throughput_ops_s": 171.1322,
+      "finality_p50_ms": 5.7398,
+      "finality_p95_ms": 5.7862,
+      "message_count": 240,
+      "bytes_per_operation": 3736.0,
+      "prototype_scope": "single-process; signatures and quorum logic included; network transport excluded"
+    },
+    {
+      "validators": 4,
+      "workload": "single_domain_conflict",
+      "operations": 20,
+      "elapsed_ms": 116.9617,
+      "throughput_ops_s": 170.9962,
+      "finality_p50_ms": 5.7571,
+      "finality_p95_ms": 5.8411,
+      "message_count": 240,
+      "bytes_per_operation": 3736.0,
+      "prototype_scope": "single-process; signatures and quorum logic included; network transport excluded"
+    },
+    {
+      "validators": 4,
+      "workload": "multi_domain_join",
+      "operations": 20,
+      "elapsed_ms": 253.82,
+      "throughput_ops_s": 78.796,
+      "finality_p50_ms": 12.5851,
+      "finality_p95_ms": 12.7833,
+      "message_count": 560,
+      "bytes_per_operation": 9844.0,
+      "prototype_scope": "single-process; signatures and quorum logic included; network transport excluded"
+    },
+    {
+      "validators": 7,
+      "workload": "single_domain_independent",
+      "operations": 20,
+      "elapsed_ms": 192.5796,
+      "throughput_ops_s": 103.8532,
+      "finality_p50_ms": 9.4914,
+      "finality_p95_ms": 9.76,
+      "message_count": 420,
+      "bytes_per_operation": 6538.0,
+      "prototype_scope": "single-process; signatures and quorum logic included; network transport excluded"
+    },
+    {
+      "validators": 7,
+      "workload": "single_domain_conflict",
+      "operations": 20,
+      "elapsed_ms": 189.5376,
+      "throughput_ops_s": 105.52,
+      "finality_p50_ms": 9.4169,
+      "finality_p95_ms": 9.5501,
+      "message_count": 420,
+      "bytes_per_operation": 6538.0,
+      "prototype_scope": "single-process; signatures and quorum logic included; network transport excluded"
+    },
+    {
+      "validators": 7,
+      "workload": "multi_domain_join",
+      "operations": 20,
+      "elapsed_ms": 417.6659,
+      "throughput_ops_s": 47.8852,
+      "finality_p50_ms": 20.8214,
+      "finality_p95_ms": 20.9673,
+      "message_count": 980,
+      "bytes_per_operation": 17227.0,
+      "prototype_scope": "single-process; signatures and quorum logic included; network transport excluded"
+    },
+    {
+      "validators": 10,
+      "workload": "single_domain_independent",
+      "operations": 20,
+      "elapsed_ms": 267.1692,
+      "throughput_ops_s": 74.8589,
+      "finality_p50_ms": 13.2351,
+      "finality_p95_ms": 13.3818,
+      "message_count": 600,
+      "bytes_per_operation": 9340.0,
+      "prototype_scope": "single-process; signatures and quorum logic included; network transport excluded"
+    },
+    {
+      "validators": 10,
+      "workload": "single_domain_conflict",
+      "operations": 20,
+      "elapsed_ms": 268.1892,
+      "throughput_ops_s": 74.5742,
+      "finality_p50_ms": 13.2628,
+      "finality_p95_ms": 13.3956,
+      "message_count": 600,
+      "bytes_per_operation": 9340.0,
+      "prototype_scope": "single-process; signatures and quorum logic included; network transport excluded"
+    },
+    {
+      "validators": 10,
+      "workload": "multi_domain_join",
+      "operations": 20,
+      "elapsed_ms": 584.1317,
+      "throughput_ops_s": 34.2389,
+      "finality_p50_ms": 29.0266,
+      "finality_p95_ms": 29.411,
+      "message_count": 1400,
+      "bytes_per_operation": 24610.0,
+      "prototype_scope": "single-process; signatures and quorum logic included; network transport excluded"
+    }
+  ]
+}

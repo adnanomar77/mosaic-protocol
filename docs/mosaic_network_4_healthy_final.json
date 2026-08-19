@@ -1,0 +1,94 @@
+{
+  "nodes": 4,
+  "operations_requested": 10,
+  "operations_successful": 10,
+  "delay_ms": 0.0,
+  "drop_rate": 0.0,
+  "byzantine_id": null,
+  "p50_ms": 18.716661,
+  "p95_ms": 20.156456,
+  "durations_ms": [
+    19.593735,
+    19.824357,
+    17.263305,
+    20.34,
+    16.338882,
+    18.047197,
+    18.716661,
+    17.590148,
+    18.695104,
+    20.156456
+  ],
+  "node_metrics": [
+    {
+      "metrics": {
+        "closures_issued": 10,
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "errors": 0,
+        "rate_limited": 0,
+        "received_bytes": 57368,
+        "received_messages": 62,
+        "replay_rejected": 9,
+        "retries": 0,
+        "sent_bytes": 70950,
+        "sent_messages": 69
+      },
+      "node_id": "w0",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "closures_issued": 10,
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "errors": 0,
+        "rate_limited": 0,
+        "received_bytes": 49668,
+        "received_messages": 58,
+        "replay_rejected": 13,
+        "retries": 0,
+        "sent_bytes": 70953,
+        "sent_messages": 69
+      },
+      "node_id": "w1",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "closures_issued": 10,
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "errors": 0,
+        "rate_limited": 0,
+        "received_bytes": 51593,
+        "received_messages": 59,
+        "replay_rejected": 12,
+        "retries": 0,
+        "sent_bytes": 69321,
+        "sent_messages": 66
+      },
+      "node_id": "w2",
+      "ok": true
+    },
+    {
+      "metrics": {
+        "closures_issued": 10,
+        "conflicts": 0,
+        "dropped_messages": 0,
+        "errors": 0,
+        "rate_limited": 0,
+        "received_bytes": 51594,
+        "received_messages": 59,
+        "replay_rejected": 12,
+        "retries": 0,
+        "sent_bytes": 69321,
+        "sent_messages": 66
+      },
+      "node_id": "w3",
+      "ok": true
+    }
+  ],
+  "status_events": [],
+  "scope": "independent localhost TCP processes; leaderless receipt gossip; Ed25519 receipts and closure"
+}

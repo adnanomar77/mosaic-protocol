@@ -1,0 +1,10 @@
+{
+  "seed": 271828,
+  "iterations": 2000,
+  "accepted": 211,
+  "rejected": 3789,
+  "unexpected_count": 0,
+  "unexpected": [],
+  "passed": true,
+  "scope": "parser-level deterministic fuzz; not a substitute for network penetration testing"
+}
