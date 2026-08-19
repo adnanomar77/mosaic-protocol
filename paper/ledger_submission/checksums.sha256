@@ -1,0 +1,13 @@
+# MOSAIC Ledger submission checksums
+
+Repository: https://github.com/adnanomar77/mosaic-protocol
+Commit: a161ebe5da146728be53f15e7991d84b9f477ddf
+Tests: 87 passed
+Reference URLs audited: 11; Reed1960 publisher page classified as access-restricted after DOI resolution and manually verified from official SIAM record
+
+3208ab0e7367363cfe88e5833271ea7ecf4bcbae7ab95f8611472fbdde5dc2c1  paper/ledger_submission/main.pdf
+c4d90dee096a11a2ad442a4b80220f1cd631f88ed252340f884fe1dcb2c6b7ce  paper/ledger_submission/cover_letter.pdf
+d8cc2fc43c1a8a0b0fbbd3d53325c889604431e1bd0be61f88a9e2d8d8488c89  paper/ledger_submission/main.tex
+1365d6515e986aa718b1f79f0c4f2ee796bc30d8cdd82e65c26e62576e5c27a9  paper/ledger_submission/references.bib
+1791540078eb5fc16442899d6b00548daa68bae561f1d53d1f288387cb136e8b  paper/ledger_submission/cover_letter.tex
+31c2a2a200a79fdefbc2bd7003862e0cb534e28e9a81c413b8128ec1b6b501eb  paper/reference_status.json
