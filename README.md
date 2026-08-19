@@ -49,7 +49,7 @@ The Ledger submission package is under `paper/ledger_submission/`. The source ma
 
 The companion research paper is:
 
-> Adnan Omar Awad Allemon, “MOSAIC: State-Transition-Centric Integrity Capsules for Distributed Ledger Execution.” Submission under consideration at Ledger.
+> Adnan Omar Awad Allemon, “MOSAIC: State-Transition-Centric Integrity Capsules for Distributed Ledger Execution.” Ledger submission artifact.
 
 ## Reproducibility and security
 

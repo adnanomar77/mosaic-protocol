@@ -8,12 +8,6 @@
 \usepackage{xcolor}
 \usepackage{listings}
 
-\newcommand{\thefirstpagenum}[0]{X}
-\newcommand{\thelastpagenum}[0]{X}
-\newcommand{\theyear}[0]{2026}
-\newcommand{\thevol}[0]{X}
-\newcommand{\thedoi}[0]{DOI 10.5195/LEDGER.2026.XXXX}
-\newcommand{\ledgerpages}[0]{\thefirstpagenum-\thelastpagenum}
 \hypersetup{pdfauthor={Allemon, Adnan Omar Awad}, pdftitle={MOSAIC: State-Transition-Centric Integrity Capsules for Distributed Ledger Execution}}
 \overfullrule=0pt
 \lstset{basicstyle=\ttfamily\fontsize{7.5pt}{8.5pt}\selectfont, columns=fullflexible, keepspaces=true, frame=single, breaklines=true}
@@ -21,7 +15,7 @@
 \title{MOSAIC: State-Transition-Centric Integrity Capsules for Distributed Ledger Execution}
 \author{Adnan Omar Awad Allemon,\thanks{A. O. A. Allemon (adnanomar774@gmail.com) is an independent researcher.}}
 \pagestyle{pagemain}
-\pretitle{\centering \selectfont RESEARCH ARTICLE \par Submission Under Consideration at Ledger \par \fontsize{24pt}{28pt}\selectfont}
+\pretitle{\centering \selectfont RESEARCH ARTICLE \par \fontsize{24pt}{28pt}\selectfont}
 
 \begin{document}
 \maketitle
@@ -175,14 +169,32 @@ Input: incoming Capsule C and durable store W
 \end{figure}
 
 \section{Evidence-Complete Transition Closure}
-\subsection{Definition}
-For every Capsule $C$, define the observed terminal outcome as
+\subsection{Definition and evidence predicate}
+Let $C$ be a Capsule and let $\Pi$ be a candidate ClosureProof. Write $U(\Pi)$ for the receipt set after deduplication by witness identifier, $I(\Pi)=\{r.\mathit{witness\_id}:r\in U(\Pi)\}$, $M$ for the current validator membership, $w(v)$ for member weight, and $\theta$ for the configured closure threshold. In Model A, $w(v)=1$ and $\theta=2f+1$. The paper uses the following implementation-grounded predicate:
+\begin{align*}
+\mathsf{VCP}(C,\Pi)\;\Longleftrightarrow\;&\Pi.\mathit{capsule\_id}=C.\mathit{capsule\_id}\ \land\ \Pi.\mathit{predecessor\_id}=C.\mathit{predecessor\_id}\\
+&\land\ \Pi.\mathit{epoch}=C.\mathit{epoch}\ \land\ \Pi.\mathit{attempt}=C.\mathit{attempt}\\
+&\land\ I(\Pi)=\operatorname{set}(\Pi.\mathit{signer\_ids})\land |I(\Pi)|=|\Pi.\mathit{signer\_ids}|\\
+&\land\ \forall r\in U(\Pi):\mathsf{VerifyReceipt}(r)\land r.\mathit{status}=\texttt{ACCEPT}\land r.\mathit{capsule\_id}=C.\mathit{capsule\_id}\\
+&\land\ \sum_{v\in I(\Pi)}w(v)\geq\theta\\
+&\land\ \Pi.\mathit{proof\_id}=\mathsf{ClosureDigest}(C,U(\Pi)).
+\end{align*}
+where
 \begin{equation}
-Outcome(C)\in\{Closed,Conflict,Abandoned\}.
+\begin{aligned}
+\mathsf{ClosureDigest}(C,U)=H\!\bigl(&\texttt{MOSAIC/CLOSURE/v0.1},C.\mathit{capsule\_id},C.\mathit{predecessor\_id},\\
+& C.\mathit{epoch},C.\mathit{attempt},\operatorname{sort}\{r.\mathit{receipt\_id}:r\in U\}\bigr).
+\end{aligned}
 \end{equation}
-The Closed outcome requires a valid ClosureProof and a successor StateSeal. The Conflict outcome requires ConflictEvidence naming the incompatible claims. The Abandoned outcome requires an AbandonProof. If none of these artifacts has been observed, the local state is \emph{pending}, not a terminal outcome; the protocol must not silently infer success or failure.
+Here $\mathsf{VerifyReceipt}$ includes membership lookup, signature verification, predecessor/epoch/attempt binding, and the current protocol epoch. A proof is therefore not valid merely because it contains enough signer names: it must be a canonical, identifier-bound set of individually valid ACCEPT receipts whose recomputed digest and weighted threshold agree with the proof. A closure is admissible for registration only when no previously recorded \texttt{ConflictEvidence} has the same predecessor identifier; this is the implementation-wide guard enforced by \texttt{register\_closure}. The theorem's incompatibility domain is the narrower same-resource, same-epoch, same-attempt first-claim context.
 
-The implementation exposes this definition through the \texttt{ECTCStatus} and \texttt{TransitionOutcome} types. \texttt{MosaicProtocol.transition\_outcome} returns Closed only after both closure and successor seal are present, returns Conflict when evidence names the Capsule, returns Abandoned when the abandonment proof exists, and otherwise returns no terminal outcome. This distinction makes the semantics testable without claiming that every network participant has instantaneous knowledge of every artifact.
+For a local observation at time $t$, define
+\begin{equation}
+\mathsf{Closed}_t(C)\Longleftrightarrow\exists\Pi,S:\mathsf{VCP}(C,\Pi)\land\mathsf{Registered}(C,\Pi)\land\mathsf{SuccessorSeal}(C,S).
+\end{equation}
+The other terminal outcomes require, respectively, a verifiable \texttt{ConflictEvidence} naming $C$ and its incompatible claim, or a verifiable \texttt{AbandonProof} naming $C$. We call the observation \emph{evidence-complete} exactly when one of these three terminal predicates is true. If none is true, $Outcome_t(C)=\mathsf{Pending}$; the protocol must not silently infer success, failure, or eventual completion.
+
+The implementation exposes this definition through the \texttt{ECTCStatus} and \texttt{TransitionOutcome} types. \texttt{MosaicProtocol.transition\_outcome} returns Closed only after both a stored closure and a matching successor seal are locally observed, returns Conflict when evidence names the Capsule, returns Abandoned when the abandonment proof exists, and otherwise returns \texttt{None}. Thus ECTC specifies the validity and classification of an observed terminal artifact; it does not assert that such an artifact will eventually be produced or observed by every participant.
 
 \subsection{Protocol invariants}
 The paper invariants are stated below. The TLA+ file \texttt{formal/mosaic\_safety.tla} uses the same names; the bounded model maps finite-state transitions to these properties.
@@ -205,11 +217,11 @@ In Model A, let $N\geq3f+1$ and let each valid closure quorum have cardinality a
 \end{equation}
 At most $f$ validators are Byzantine, so $Q_1\cap Q_2$ contains an honest validator.
 
-\textbf{Theorem 1 (Closure Exclusivity).} Under the Model A quorum-intersection and honest non-equivocation assumptions, two incompatible Capsules cannot both obtain valid ClosureProofs for the same resource and protocol context.
+\textbf{Theorem 1 (Closure Exclusivity).} Fix one resource, predecessor context, epoch, and attempt domain. Under Model A, honest non-equivocation, and the predicate $\mathsf{VCP}$ above, there do not exist incompatible Capsules $C_1,C_2$ and proofs $\Pi_1,\Pi_2$ such that $\mathsf{VCP}(C_1,\Pi_1)$ and $\mathsf{VCP}(C_2,\Pi_2)$ both hold.
 
-\emph{Proof.} Assume for contradiction that incompatible Capsules $C_1$ and $C_2$ both obtain valid ClosureProofs with signer quorums $Q_1$ and $Q_2$. The intersection argument above gives an honest validator $h\in Q_1\cap Q_2$. Because both proofs are valid, $h$ issued an ACCEPT receipt for both Capsules. Since the Capsules are incompatible in the same first-claim context, this violates the honest non-equivocation assumption enforced by the first-claim lock. Therefore both ClosureProofs cannot be valid simultaneously. $\square$
+\emph{Proof.} Suppose, for contradiction, that such $C_1,C_2,\Pi_1,\Pi_2$ exist. Let $Q_i=\{r.\mathit{witness\_id}:r\in U(\Pi_i)\}$. The threshold clause in $\mathsf{VCP}$ and Model A give $|Q_i|\geq2f+1$. The intersection inequality therefore gives an honest validator $h\in Q_1\cap Q_2$. By the receipt-validity clause of $\mathsf{VCP}$, $h$ issued a valid ACCEPT receipt for each Capsule. Because $C_1$ and $C_2$ are incompatible in the same first-claim context, this contradicts honest non-equivocation. Hence no two incompatible proofs can simultaneously satisfy $\mathsf{VCP}$. Since registration additionally rejects a predecessor context with recorded ConflictEvidence, two incompatible Closed observations are also impossible under these premises. $\square$
 
-The theorem is conditional. It does not prove liveness, cryptographic key security, permissionless Sybil resistance, economic incentive compatibility, or correctness under arbitrary reconfiguration. In Model B, if $w(Q_i)>2W/3$ and Byzantine weight is at most $W/3$, then $w(Q_1\cap Q_2)>W/3$ and the intersection contains positive honest weight. The executable \texttt{mosaic/safety.py} and model checker validate finite instances of these premises; they do not replace the theorem or establish an unbounded formal proof.
+The theorem is conditional and safety-only. It does not prove that any Capsule will obtain a valid proof, that a valid proof will be delivered to every observer, or that a pending observation will eventually become terminal. It also does not prove cryptographic key security, permissionless Sybil resistance, economic incentive compatibility, or correctness under arbitrary reconfiguration. In Model B, if $w(Q_i)>2W/3$ and Byzantine weight is at most $W/3$, then $w(Q_1\cap Q_2)>W/3$ and the intersection contains positive honest weight. The executable \texttt{mosaic/safety.py} and model checker validate finite instances of these premises; they do not replace the theorem or establish an unbounded formal proof.
 
 \section{Implementation}
 The prototype is written for Python 3.11 or newer. The public repository contains a \texttt{mosaic} namespace for the protocol and permissionless layers and a \texttt{ccd\_nexus} namespace for shared cryptographic primitives and legacy support. The code uses canonical serialization, Ed25519 signatures, digest-bound identifiers, and typed dataclasses for protocol objects.
@@ -370,13 +382,18 @@ The seven-process v5 local rehearsal used two Byzantine identities, one schedule
 
 \section{Related Work}
 \subsection{Ordered BFT and DAG dissemination}
-Practical Byzantine fault tolerance established the classic state-machine replication baseline for signed requests, quorum agreement, and deterministic execution \cite{Castro1999PBFT}; later systems work emphasizes the composability and implementation boundaries among clients, agreement, execution, checkpointing, and recovery \cite{Distler2021BFTSMR}. HotStuff is a leader-based BFT replication protocol with a partially synchronous safety/liveness model and responsive communication phases \cite{Yin2019HotStuff}. Narwhal and Tusk separate reliable dissemination from ordering and use a DAG-based mempool with BFT consensus \cite{Danezis2022Narwhal}. Mysticeti studies low-latency DAG-based BFT and reports a large-scale evaluation \cite{Babel2025Mysticeti}. MOSAIC does not replace these protocols or claim a lower communication bound. Its proposed object is a transition lifecycle whose evidence is consumed by execution and audit layers.
+Practical Byzantine fault tolerance established the classic state-machine replication baseline for signed requests, quorum agreement, and deterministic execution \cite{Castro1999PBFT}. The broader SMR literature treats agreement, execution, recovery, and replica coordination as separable protocol layers \cite{Cachin2010SMRByzantine}; surveys of BFT protocols likewise emphasize the difficulty of composing these layers without changing their failure assumptions \cite{Aublin2015Next700BFT,Distler2021BFTSMR}. Bessani et al. argue that deploying a blockchain requires more than consensus, including execution, membership, storage, and operational mechanisms \cite{Bessani2020ConsensusBeginning}; Wang shows that the security/liveness model of deployed DLT protocols can diverge from the traditional academic BFT model \cite{Wang2022DLTBFT}. HotStuff is a leader-based BFT replication protocol with a partially synchronous safety/liveness model and responsive communication phases \cite{Yin2019HotStuff}. Narwhal and Tusk separate reliable dissemination from ordering and use a DAG-based mempool with BFT consensus \cite{Danezis2022Narwhal}. Mysticeti studies low-latency DAG-based BFT and reports a large-scale evaluation \cite{Babel2025Mysticeti}. MOSAIC does not replace these protocols, claim a lower communication bound, or turn a local run into a liveness theorem. Its proposed object is a transition lifecycle whose evidence is consumed by execution and audit layers.
 
 \subsection{Certificates and restricted ordering}
-FastPay demonstrates a high-throughput settlement protocol based on Byzantine consistent broadcast for pre-funded payments \cite{Baudet2020FastPay}. Sui Lutris combines a consensusless agreement path with consensus when transactions risk inconsistent concurrent access \cite{Blackshear2024SuiLutris}. Sui's object model makes versions, owners, and authenticated object references first-class \cite{SuiObjectModel}. Polygraph studies accountability in Byzantine agreement by exposing evidence when disagreement becomes unavoidable \cite{Civit2021Polygraph}. These works are close prior art for selective ordering, local certificates, and accountability. MOSAIC's narrower hypothesis is that the accepted and rejected transition claims should share one explicit evidence-complete closure lifecycle.
+FastPay demonstrates a high-throughput settlement protocol based on Byzantine consistent broadcast for pre-funded payments \cite{Baudet2020FastPay}. Sui Lutris combines a consensusless agreement path with consensus when transactions risk inconsistent concurrent access \cite{Blackshear2024SuiLutris}; its object model makes versions, owners, and authenticated object references first-class \cite{SuiObjectModel}. Polygraph studies accountability in Byzantine agreement by exposing evidence when disagreement becomes unavoidable \cite{Civit2021Polygraph}. These works are close prior art for selective ordering, local certificates, and accountability. Their certificates or evidence objects answer narrower questions—whether a payment is authorized, whether an object access is safe, or which protocol behavior is attributable. ECTC instead defines the terminal semantic interface for one transition: a positive outcome requires the complete closure-and-successor evidence set, a negative outcome preserves a conflict or abandonment artifact, and the absence of either remains pending. This is not a claim to invent certificates or accountability; it is a claim about the falsifiable lifecycle contract imposed on them.
 
 \subsection{Object-centric state and parallel execution}
-Tango investigates distributed data structures over a shared log and demonstrates that object-level state and versioning can be built above replicated logging \cite{Balakrishnan2013Tango}. Block-STM uses optimistic concurrency and deterministic validation to execute transactions in parallel while preserving a preset order \cite{Gelashvili2022BlockSTM}. Process-commutative distributed objects and BFT CRDTs study legal operation traces and the space between conflict-free replication and total-order ledgers \cite{Frey2024BFTCRDT}. These results prevent MOSAIC from claiming first use of object-centric execution, optimistic concurrency, commutativity, or reduced ordering scope. Attested append-only memory also shows how authenticated history can constrain an adversary's later claims \cite{Chun2007AttestedMemory}. The distinction proposed here is evidence semantics: a transition's terminal status is Closed only with a closure proof and successor seal, while Conflict and Abandoned remain independently inspectable artifacts. ECTC is therefore positioned as a specific lifecycle and evidence boundary, not as a claim to invent authenticated state, transaction certificates, or accountability in general.
+Tango investigates distributed data structures over a shared log and demonstrates that object-level state and versioning can be built above replicated logging \cite{Balakrishnan2013Tango}. Block-STM uses optimistic concurrency and deterministic validation to execute transactions in parallel while preserving a preset order \cite{Gelashvili2022BlockSTM}. Process-commutative distributed objects and BFT CRDTs study legal operation traces and the space between conflict-free replication and total-order ledgers \cite{Frey2024BFTCRDT}. These results prevent MOSAIC from claiming first use of object-centric execution, optimistic concurrency, commutativity, or reduced ordering scope. Attested append-only memory also shows how authenticated history can constrain an adversary's later claims \cite{Chun2007AttestedMemory}. ECTC does not add another object model or execution scheduler. Its distinction is evidence semantics: a transition's terminal status is Closed only with a valid closure proof and successor seal, while Conflict and Abandoned remain independently inspectable artifacts and Pending is a defined non-terminal state.
+
+\subsection{Novelty boundary and composition claim}
+The novelty claim is deliberately narrower than a claim of inventing a new cryptographic primitive, quorum rule, object model, certificate format, scheduler, or BFT protocol. ECTC is a semantic interface over those mechanisms. A system satisfies the proposed interface only when it can distinguish four observational states—Closed, Conflict, Abandoned, and Pending—and can validate the artifact predicate associated with each state. The positive path is conjunctive: a valid, identifier-bound, threshold-supported ClosureProof is insufficient for Closed until the matching successor StateSeal is also observed. The negative paths are not discarded error codes: incompatible claims and explicit abandonment remain evidence-bearing terminal states. Pending is not failure and is not success.
+
+This boundary answers the composition objection in a falsifiable way. If the lifecycle is removed, a prototype can still use objects, certificates, optimistic execution, or quorum voting, but it no longer satisfies ECTC's outcome classifier, the VCP-based Closure Exclusivity theorem, or the evidence-preservation invariants I1--I8. If the same primitives are retained but a system silently treats a missing proof or successor seal as success, it fails the proposed semantics. The contribution is therefore the specified conjunction, its safety argument, its explicit non-implication of liveness, and its executable tests—not priority over the individual components.
 
 \begin{table}[h]
 \centering
@@ -395,7 +412,8 @@ Mysticeti & Uncertified DAG BFT & Theorem and WAN evaluation & Sets a stronger l
 Tango & Versioned data structures over shared log & Distributed-system evaluation & Prior art for object-level state and versioning. \\
 Block-STM & Optimistic deterministic execution & Execution benchmarks & Prior art for conflict-aware parallel execution, not closure evidence. \\
 BFT CRDT objects & Commutative operation traces & Formal crash/Byzantine models & Prior art for reduced ordering and Byzantine objects, not the ECTC lifecycle. \\
-MOSAIC & Capsule and closure evidence & Bounded model/local tests & Hypothesis: every observed terminal transition outcome has a verifiable artifact. \\
+Accountable agreement & Misbehavior evidence & Theorem/protocol evaluation & Prior art for attributable faults; ECTC applies evidence completeness to every terminal transition outcome. \\
+MOSAIC & Capsule and closure evidence & Bounded model/local tests & Hypothesis: every observed terminal transition outcome has a verifiable artifact, while Pending remains non-terminal. \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -407,8 +425,14 @@ The prototype assumes unforgeable Ed25519 signatures, deterministic canonical se
 \subsection{Safety}
 The ECTC invariants and Theorem 1 provide the stated safety boundary. The implementation rejects application without a valid ClosureProof, verifies predecessor and successor bindings, rejects incompatible closures with recorded evidence, and checks execution receipts against successor roots. The TLA+ model and Python checker are bounded/model-checked support, not an unbounded proof of the entire implementation.
 
-\subsection{Liveness}
-The local long-run achieved 120/120 completed operations and liveness ratio 1.0 under the declared schedule. The beacon fallback preserves progress when reveal weight is low in the local model. These observations do not establish liveness under arbitrary WAN partitions, operator churn, public admission, or adversarial stake concentration.
+\subsection{Evidence completeness versus liveness}
+Evidence completeness is a predicate over an observed protocol state: at time $t$, a Capsule is complete when a verifier can validate exactly one of the Closed, Conflict, or Abandoned artifact sets. Liveness is a temporal property. For an initial observation time $t_0$, define
+\begin{equation}
+\mathsf{Live}(C,t_0)\Longleftrightarrow\exists t\geq t_0:\mathsf{Closed}_t(C)\lor\mathsf{Conflict}_t(C)\lor\mathsf{Abandoned}_t(C).
+\end{equation}
+The implication $\mathsf{EvidenceComplete}_t(C)\Rightarrow\mathsf{Live}(C,t_0)$ is invalid in general: evidence may already be complete because a conflicting or abandonment artifact was produced, while ECTC itself says nothing about whether a pending Capsule will ever reach any terminal outcome. Conversely, a liveness theorem would require a separate network, scheduling, membership, and failure model; it cannot be inferred from the ECTC classifier or Theorem 1.
+
+The local long-run achieved 120/120 completed operations and liveness ratio 1.0 under the declared schedule. This is an operational observation of one implementation and harness, not a theorem of eventual termination. The beacon fallback preserves progress when reveal weight is low in the local model, but these observations do not establish liveness under arbitrary WAN partitions, operator churn, public admission, or adversarial stake concentration.
 
 \subsection{Accountability}
 ConflictEvidence and AbandonProof make negative protocol outcomes inspectable. The hash-chained event log makes operational incidents and upgrades tamper-evident within one log. These artifacts provide evidence for review; they do not by themselves prove that every external observer saw the same message schedule or that a Byzantine operator will accept a slashing decision.
@@ -461,10 +485,10 @@ PYTHONPATH=. python3 paper/generate_figures.py
 python3 -m benchmarks.run_mosaic_testnet_long --nodes 7 \\
   --operations 120 --base-port 22620 \\
   --data-dir /tmp/mosaic-testnet-long \\
-  --event-log testnet/events/testnet-0.jsonl
+  --event-log testnet/events/testnet-0-final.jsonl
 \end{lstlisting}
 
-The fixed research artifact is tagged `v6.0.0-ectc-paper` separately from the moving branch. The repository excludes private keys, credentials, local virtual environments, and runtime WAL data. \texttt{paper/ledger\_submission/checksums.sha256} records the manuscript and submission-package hashes. The values reported in this paper are reproducible workload/artifact values, not a promise of identical microsecond-level timings on another machine.
+The fixed research artifact is tagged `v8.0.0-ectc-scientific-revision` separately from the moving branch. The repository excludes private keys, credentials, local virtual environments, and runtime WAL data. \texttt{paper/ledger\_submission/checksums.sha256} records the manuscript and submission-package hashes. The values reported in this paper are reproducible workload/artifact values, not a promise of identical microsecond-level timings on another machine.
 
 \section{Discussion}
 The scientific value of MOSAIC, if supported by independent replication, would be a change in the object whose integrity is made explicit. A conventional ledger can retain transaction data, votes, and state roots, but a protocol implementation may still expose a rejected or abandoned claim only as an absence from the committed path. ECTC makes the negative paths part of the claimed lifecycle. That may matter in settlement networks, registries, multi-party workflows, or systems where the reason for rejection is itself subject to audit.
@@ -489,10 +513,10 @@ AOAA designed the MOSAIC protocol model, implemented the prototype and benchmark
 The author declares that he has no known conflicts of interest relevant to this work.
 
 \section*{AI Use Disclosure}
-An AI-assisted software and language workflow was used during project development and manuscript preparation \cite{LedgerAI} for code inspection, drafting support, organization, and language editing. The author reviewed the implementation, ran the experiments, verified the reported values and sources, and remains solely responsible for the manuscript, its claims, limitations, and final submission. This disclosure follows Ledger's AI policy.
+An AI-assisted software and language workflow was used during project development and manuscript preparation for code inspection, drafting support, organization, and language editing. The author reviewed the implementation, ran the experiments, verified the reported values and sources, and remains solely responsible for the manuscript, its claims, limitations, and final submission. This disclosure follows Ledger's AI policy.
 
 \section*{Data and Code Availability}
-The source code, benchmark drivers, formal model, generated figures, tabular data, JSON artifacts, adversarial matrix, and checksums are available at \url{https://github.com/adnanomar77/mosaic-protocol} \cite{Allemon2026MOSAIC}. The fixed artifact version associated with this revision is identified by repository tag `v6.0.0-ectc-paper` and checksum manifest. The public repository excludes private keys, credentials, and local virtual environments. All current evaluation artifacts retain the \texttt{LOCAL\_EMULATION} scope.
+The source code, benchmark drivers, formal model, generated figures, tabular data, JSON artifacts, adversarial matrix, and checksums are available at \url{https://github.com/adnanomar77/mosaic-protocol} \cite{Allemon2026MOSAIC}. The fixed artifact version associated with this revision is identified by repository tag `v8.0.0-ectc-scientific-revision` and checksum manifest. The public repository excludes private keys, credentials, and local virtual environments. All current evaluation artifacts retain the \texttt{LOCAL\_EMULATION} scope.
 
 \bibliographystyle{ledgerbib}
 \bibliography{references}

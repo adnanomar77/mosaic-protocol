@@ -1,6 +1,6 @@
 {
   "source": "paper/ledger_submission/references.bib",
-  "checked": 18,
+  "checked": 20,
   "results": [
     {
       "key": "Nakamoto2008",
@@ -75,24 +75,6 @@
       "status_class": "ok"
     },
     {
-      "key": "LedgerAbout",
-      "url": "https://ledger.pitt.edu/ojs/ledger/about",
-      "scheme": "https",
-      "status": 200,
-      "final_url": "https://ledger.pitt.edu/ojs/ledger/about",
-      "error": null,
-      "status_class": "ok"
-    },
-    {
-      "key": "LedgerAI",
-      "url": "https://ledgerjournal.org/ojs/ledger/AI",
-      "scheme": "https",
-      "status": 200,
-      "final_url": "https://ledgerjournal.org/ojs/ledger/AI",
-      "error": null,
-      "status_class": "ok"
-    },
-    {
       "key": "Allemon2026MOSAIC",
       "url": "https://github.com/adnanomar77/mosaic-protocol",
       "scheme": "https",
@@ -163,6 +145,42 @@
       "final_url": "https://research.google/pubs/attested-append-only-memory-making-adversaries-stick-to-their-word/",
       "error": null,
       "status_class": "ok"
+    },
+    {
+      "key": "Cachin2010SMRByzantine",
+      "url": "https://doi.org/10.1007/978-3-642-11294-2_9",
+      "scheme": "https",
+      "status": 200,
+      "final_url": "https://link.springer.com/chapter/10.1007/978-3-642-11294-2_9",
+      "error": null,
+      "status_class": "ok"
+    },
+    {
+      "key": "Aublin2015Next700BFT",
+      "url": "https://doi.org/10.1145/2658994",
+      "scheme": "https",
+      "status": 403,
+      "final_url": "https://dl.acm.org/doi/10.1145/2658994",
+      "error": null,
+      "status_class": "publisher_access_restricted"
+    },
+    {
+      "key": "Bessani2020ConsensusBeginning",
+      "url": "https://doi.org/10.1109/DSN48063.2020.00057",
+      "scheme": "https",
+      "status": 202,
+      "final_url": "https://ieeexplore.ieee.org/document/9153422/",
+      "error": null,
+      "status_class": "ok"
+    },
+    {
+      "key": "Wang2022DLTBFT",
+      "url": "https://doi.org/10.1145/3538227",
+      "scheme": "https",
+      "status": 403,
+      "final_url": "https://dl.acm.org/doi/10.1145/3538227",
+      "error": null,
+      "status_class": "publisher_access_restricted"
     }
   ]
 }

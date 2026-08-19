@@ -8,7 +8,7 @@ Let a protocol context be a resource identifier and epoch. Let `N` be the valida
 N \geq 3f+1, \qquad |Q| \geq 2f+1.
 \]
 
-A `ClosureProof` for a Capsule is valid only if every signer in its quorum has issued a valid `WitnessReceipt` for that Capsule and the quorum satisfies the threshold. An honest validator does not sign two incompatible Capsules for the same resource and epoch context. The first-claim lock is the local mechanism that records this non-equivocation condition.
+For a Capsule `C` and candidate proof `P`, let `U(P)` be the receipts after deduplication by witness identifier and let `I(P)` be their witness-ID set. Define `VCP(C,P)` to hold iff (i) the proof capsule ID, predecessor ID, epoch, and attempt equal those of `C`; (ii) `I(P)` equals the proof's signer-ID set and contains no duplicate signer entry; (iii) every receipt in `U(P)` verifies under the current membership, is an `ACCEPT` receipt, and names `C`; (iv) the sum of the current member weights in `I(P)` meets the configured threshold; and (v) the proof ID recomputes from the canonical protocol label, capsule context, and sorted receipt IDs. In Model A, the weights are one and the threshold is `2f+1`. A closure is admissible for registration only if no recorded ConflictEvidence has the same predecessor identifier. An honest validator does not sign two incompatible Capsules for the same resource, predecessor, epoch, and attempt context. The first-claim lock is the local mechanism that records this non-equivocation condition.
 
 In **Model B**, validators have positive weights `w(v)`, total weight is `W`, a quorum satisfies `w(Q) > 2W/3`, and Byzantine weight is at most `W/3`. Model B is an extension; the paper's core theorem is stated first for Model A.
 
@@ -24,13 +24,13 @@ At most `f` validators are Byzantine. Therefore `Q1 ∩ Q2` contains at least on
 
 ## Theorem 1: Closure Exclusivity
 
-Under the Model A assumptions, two incompatible Capsules cannot both obtain valid `ClosureProof`s for the same resource and protocol context.
+Under the Model A assumptions, there do not exist incompatible Capsules `C1`, `C2` and proofs `P1`, `P2` such that `VCP(C1,P1)` and `VCP(C2,P2)` both hold for the same resource, predecessor, epoch, and attempt context.
 
 ### Proof
 
-Assume for contradiction that incompatible Capsules `C1` and `C2` both obtain valid ClosureProofs with signer quorums `Q1` and `Q2`. By Lemma 1, `Q1 ∩ Q2` contains an honest validator `h`. Since both closure proofs are valid, `h` issued an ACCEPT receipt for both `C1` and `C2`. The Capsules are incompatible in the same first-claim context, so this violates the honest non-equivocation assumption implemented by the first-claim lock. Hence both ClosureProofs cannot be valid simultaneously. ∎
+Assume for contradiction that incompatible Capsules `C1` and `C2` satisfy `VCP` with signer sets `Q1` and `Q2`. The threshold clause gives `|Q1|, |Q2| >= 2f+1`. By Lemma 1, `Q1 ∩ Q2` contains an honest validator `h`. The receipt-validity clause of `VCP` says that `h` issued a valid `ACCEPT` receipt for both Capsules. Because the Capsules are incompatible in the same first-claim context, this contradicts honest non-equivocation. Hence both proofs cannot satisfy `VCP` simultaneously. Registration additionally rejects any predecessor context with recorded ConflictEvidence, so two incompatible Closed observations are excluded under the same premises. ∎
 
-The theorem proves **closure exclusivity conditional on the stated quorum and signer assumptions**. It does not by itself prove network liveness, key security, Sybil resistance, economic security, or permissionless membership.
+Evidence completeness is a state-observation predicate: at time `t`, a Capsule is complete when a verifier can validate Closed, Conflict, or Abandoned evidence. Liveness is a separate temporal predicate, `Live(C,t0) == \E t >= t0 : Outcome_t(C) is terminal`. ECTC defines the former and does not imply the latter. The local long-run is an operational observation under one schedule, not a termination theorem.
 
 ## Weighted extension
 

@@ -4,9 +4,12 @@ EXTENDS Naturals, FiniteSets
 (***************************************************************************)
 (* Evidence-Complete Transition Closure (ECTC) bounded model.             *)
 (*                                                                         *)
-(* The model abstracts signatures and execution semantics through the     *)
-(* constants below. TLC checks the named invariants within finite sets;    *)
-(* it is not an unbounded theorem prover and does not establish crypto.    *)
+(* The model abstracts signatures and execution semantics through the      *)
+(* constants below. TLA+ checks the named invariants within finite sets;   *)
+(* it is not an unbounded theorem prover and does not establish crypto.   *)
+(* ClosureRecord is the finite-state projection of the paper's VCP         *)
+(* predicate: receipt signatures, canonical proof IDs, membership lookup, *)
+(* and exact wire serialization are abstracted as Close preconditions.     *)
 (***************************************************************************)
 
 CONSTANTS

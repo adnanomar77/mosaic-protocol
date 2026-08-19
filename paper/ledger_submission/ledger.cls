@@ -79,47 +79,27 @@
 % we need to create three page styles pagefirst, pagemain and pagelast
 \fancypagestyle{pagefirst}{%
   \fancyhf{}%
-  \lhead{\includegraphics[height=1cm]{logoNewUC}}%
-  % \lhead{Left top first}%
-  % \rhead{Right top first}%
-  % \lfoot{Left bottom first}%
-  % \rfoot{Right bottom first}%
-    \rhead{\raisebox{1cm-\height}
-    {\begin{minipage}[t]{.48\textwidth}
-      \begin{flushright}
-      \fontsize{8pt}{8pt}\selectfont \sffamily\color{gray}ISSN 2379-5980 (online)
-      \\ \thedoi
-      \end{flushright}
-    \end{minipage}}
-    }
+  % Submission-safe first page: publication metadata and template logos are
+  % intentionally omitted until the journal assigns them after acceptance.
+  \lhead{}%
+  \rhead{}%
 }
 
 
 \fancypagestyle{pagemain}{%
   \fancyhf{}%
-  % \lhead{\includegraphics[height=1cm]{logoNew}}%
-  % \lhead{Left top main }%
-  \chead{\raisebox{1cm-\height}{LEDGER VOL \thevol~(\theyear) \ledgerpages}}
+  % Publication headers/footers are neutralized for a submission manuscript.
+  \chead{}
   \cfoot{\raisebox{0.25cm-\height}{\textbf{\thepage}}}
-  \lfoot{\raisebox{0.5cm-\height}{\includegraphics[height=0.3cm]{logoSmall}}}%
-
-  % \rhead{Right top main }%
-  % \lfoot{Left bottom main }%
-  % \rfoot{Right bottom main }%
-  \rfoot{\raisebox{0.5cm-\height}
-    {\begin{minipage}[t]{.48\textwidth}
-      \begin{flushright}
-      \fontsize{8pt}{8pt}\selectfont \sffamily\color{gray}ISSN 2379-5980 (online)
-      \\ \thedoi
-      \end{flushright}
-    \end{minipage}}}
+  \lfoot{}
+  \rfoot{}
 }
 
 
 \fancypagestyle{pagelast}{%
   \fancyhf{}%
 
-  \chead{\raisebox{1cm-\height}{LEDGER VOL \thevol~(\theyear) \ledgerpages}}
+  \chead{}
 
   \cfoot{\raisebox{0.25cm-\height}{\textbf{\thepage}}
     \begin{minipage}[t]{\textwidth}
@@ -127,14 +107,8 @@
     \end{minipage}
   }
   
-  \lfoot{\raisebox{0.5cm-\height}{\includegraphics[height=0.3cm]{logoSmall}}}%
-  \rfoot{\raisebox{0.5cm-\height}
-    {\begin{minipage}[t]{.48\textwidth}
-      \begin{flushright}
-      \fontsize{8pt}{8pt}\selectfont \sffamily\color{gray}SSN 2379-5980 (online)
-      \\ \thedoi
-      \end{flushright}
-    \end{minipage}}}
+  \lfoot{}
+  \rfoot{}
 }
 
 
